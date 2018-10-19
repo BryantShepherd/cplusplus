@@ -12,6 +12,6 @@ void swap(int x, int y){
 int main(){
     int a = 2;
     int b = 3;
-    swap(a, b);
+    swap(a, b); //a va b chuyen gia tri cua minh cho bien x va y, nen a va b khong bi thay doi
     cout << a << ", " << b;
 }

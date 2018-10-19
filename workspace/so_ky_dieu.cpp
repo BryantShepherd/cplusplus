@@ -1,16 +1,31 @@
 #include <iostream>
 #include <string>
 using namespace std;
-void addOne(int &y){// y là biến tham chiếu
-    y = y + 1;
-    // không cần return!
-} //y is destroyed here
+void swap(int &a, int &b) {
+    int tmp = a;
+    a = b;
+    b = tmp;
+}
+int main() {
+    int so_phan_tu;
+    cin >> so_phan_tu;
+    int list[so_phan_tu];
+    for (int i = 0; i < so_phan_tu; i++) {
+        cin >> list[i];
+    }
 
-int main()
-{
-    int value = 5;
-    cout << "value = " << value << "\n";
-    addOne(value);
-    cout << "value = " << value << "\n";
-    return 0;
+    //sap xep
+    int min_index;
+    for (int i = 0; i < so_phan_tu; i++) {
+        min_index = i;
+        for (int j = i + 1; j < so_phan_tu; j++) {
+            if (list[j] < list[min_index]) {
+                min_index = j;
+            }
+        } 
+        swap(list[min_index], list[i]);
+    }
+    for (int i = 0; i < so_phan_tu; i++) {
+        cout << list[i] << " ";
+    }
 }
