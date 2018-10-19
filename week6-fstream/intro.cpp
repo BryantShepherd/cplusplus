@@ -4,7 +4,7 @@
 #include <windows.h>
 using namespace std;
 int main() {
-    ifstream myFile("D:\\Coding\\cplusplus\\week6-fstream\\vi_du.txt"); // khai bao bien myFile, can su dung dia chi cu the va thay '\' thanh '\\'
+    ifstream myFile("vi_du.txt"); // khai bao bien myFile, can su dung dia chi cu the va thay '\' thanh '\\'
     if (!myFile.is_open()) {    //Kiem tra xem file co mo duoc khong
         cout << "Khong mo duoc file" << endl;
         exit(1);
