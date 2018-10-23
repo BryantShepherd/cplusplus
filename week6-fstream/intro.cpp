@@ -24,7 +24,7 @@ int main() {
         exit(1);
     }
     else {
-        myFileI << "\n Adding a new line \n";
+        myFileI << "\nAdding a new line \n";
     }
     return 0;
 }
