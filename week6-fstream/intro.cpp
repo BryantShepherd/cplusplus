@@ -15,6 +15,16 @@ int main() {
         cout << line << endl;
         Sleep(100);
     }
+    myFile.close();
 
+    //ofstream
+    ofstream myFileI("D:\\Coding\\cplusplus\\week6-fstream\\vi_du.txt", ios::app);
+    if (!myFileI.is_open()) {
+        cout << "Khong mo duoc" << endl;
+        exit(1);
+    }
+    else {
+        myFileI << "\n Adding a new line \n";
+    }
     return 0;
 }

@@ -2,4 +2,7 @@
 #include <math.h>
 using namespace std;
 
-int ucln()
+int main() {
+    cout << 1 % 2 << endl;
+    return 0;
+}
