@@ -13,7 +13,6 @@ int main() {
 	int gia_tri_chen, cot_chen;
 	cin >> cot_chen >> gia_tri_chen;
 
-	bool finished = false;
 	for (int i = 0; i < m; i++) {
 		for (int j = n; j > cot_chen - 1; j--) {
 			matrix[i][j] = matrix[i][j - 1]; 

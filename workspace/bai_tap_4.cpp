@@ -3,33 +3,28 @@ using namespace std;
 int main() {
 	int m, n;
 	cin >> m >> n;
-	int matrix[m + 1][n];
+	int matrix[m][n];
 	
 	for (int i = 0; i < m; i++) {
 		for (int j = 0; j < n; j++) {
 			cin >> matrix[i][j];
 		}
 	}
-	int gia_tri_chen, hang_chen;
-	cin >> hang_chen >> gia_tri_chen;
+	
+    int hang_xoa;
+    cin >> hang_xoa;
 
-    //chuyen vi tri cac hang
-	for (int i = m; i > hang_chen - 1; i--) {
-		for (int j = 0; j < n; j++) {
-			matrix[i][j] = matrix[i - 1][j]; 
-		}
-	}
-
-	for (int j = 0; j < n; j++) {
-        matrix[hang_chen - 1][j] = gia_tri_chen;
+    for (int i = hang_xoa - 1; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            matrix[i][j] = matrix[i+1][j];
+        }
     }
 
-    for (int i = 0; i < m + 1; i++) {
-        for (int j = 0; j < n; j++) {
+    for (int i = 0; i < m - 1; i++) {
+        for (int j = 0; j < n; j++ ) {
             cout << matrix[i][j] << " ";
         }
         cout << endl;
     }
-
 	return 0;
 }

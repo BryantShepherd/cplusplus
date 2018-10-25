@@ -10,7 +10,7 @@ int main() {
         exit(1);
     }
     string line;
-    while(!myFile.eof()) {  //Neu chua doc het file tu lap lai
+    while(!myFile.eof()) {  //Neu chua doc het file thi lap lai
         getline(myFile, line); // ham getline de lay duoc ca dau cach, co the su dung nhu ham cin binh thuong. ignore, getline, mot so cai nua, ...
         cout << line << endl;
         Sleep(100);

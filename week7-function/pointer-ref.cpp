@@ -1,5 +1,8 @@
 #include <iostream>
 using namespace std;
+void addOne(int &number) {
+    number++;
+}
 int main() {
     int number = 20;
     int *pointer;
@@ -8,5 +11,8 @@ int main() {
     cout << number << endl;
     cout << pointer << endl;
     cout << *pointer << endl;
+    addOne(number);
+    cout << number << endl << *pointer << endl;
+
     return 0;
 }
