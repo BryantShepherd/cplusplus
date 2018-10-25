@@ -1,4 +1,5 @@
 #include <iostream>
+<<<<<<< HEAD
 using namespace std;
 int main() {
 	int m, n;
@@ -28,3 +29,14 @@ int main() {
     }
 	return 0;
 }
+=======
+#include <string>
+#include <sstream>
+#include <cmath>
+using namespace std;
+int main ()
+{
+    cout << M_PI << endl;
+    return 0;
+}
+>>>>>>> 60ec1b860d60ad5c9f02918bba52d8b3af59f446
