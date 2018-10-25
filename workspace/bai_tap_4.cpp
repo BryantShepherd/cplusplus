@@ -1,8 +1,10 @@
 #include <iostream>
-#include <math.h>
+#include <string>
+#include <sstream>
+#include <cmath>
 using namespace std;
-
-int main() {
-    cout << 1 % 2 << endl;
+int main ()
+{
+    cout << M_PI << endl;
     return 0;
 }
