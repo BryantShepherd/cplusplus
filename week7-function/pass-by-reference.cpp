@@ -6,7 +6,7 @@
 #include<iostream>
 #include<cmath>
 
-void getSinCos(double degrees, double &sinOut, double &cosOut){
+void getSinCos(double degrees, double &sinOut, double &cosOut){ //tao bien tham chieu sinOut va cosOut, roi sua doi 2 bien do.
     //std::sin() và std::cos() take radians
     // convert degree to radian
     const double pi = 3.14159265358979323846; // the value of pi

@@ -11,4 +11,13 @@ int main() {
 
     refnumber = 100; //thay doi gia tri bien tham chieu
     cout << "Sau khi thay refnumber = 100: " << number << " " << refnumber << endl;
+
+    /*Nhu the nghia la, trong ham nhu nay...
+    void swap(int &a, int &b) {
+        int tmp = a;
+        a = b;
+        b = tmp
+    }
+    ...minh dang tao bien tham chieu tuong ung voi 2 bien nhap vao, va thay doi gia tri cua no
+    */
 }

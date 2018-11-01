@@ -3,7 +3,7 @@ using namespace std;
 int main() {
     int number = 20;
 
-    int *pointer = &number; //khai bao con tro
+    int* pointer = &number; //khai bao con tro
 
     cout << number << endl; // in ra 20
 
