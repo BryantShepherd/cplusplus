@@ -6,16 +6,16 @@ struct SVector{
     double x;
     double y;
     
-    SVector(double _x, double _y) { //CHUA BIET DE LAM GI
-        x = _x;
-        y = _y;
-    }
+    // SVector(double _x, double _y) { //CHUA BIET DE LAM GI
+    //     x = _x;
+    //     y = _y;
+    // }
 
     void print(){
         cout << "("<< x << ", " << y << ")\n";
     }
 
-    void lay_du_lieu() {
+    void lay_du_lieu() { //co the dung cai nay de lay du lieu
         cin >> x >> y;
     }
 };
@@ -34,7 +34,7 @@ class CVector{
 int main()
 {
     //Khởi tạo dùng initialization list (BAT BUOC PHAI CO GIA TRI KHOI TAO VI MOT LY DO NAO DO...)
-    SVector s = {1.0, 3.0};
+    SVector s;
     CVector c = {2.0, 5.0};
     s.lay_du_lieu();
     
