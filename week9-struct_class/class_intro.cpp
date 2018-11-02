@@ -37,7 +37,7 @@ class Student {
 //     name = nameIn;
 // }
 int main() {
-    Student s{"Bryant", 14, 2017};
-    // s.setName("bryant");
+    // Student s{"Bryant", 14, 2017};
+    s.setName("bryant");
     cout << s.getName() << endl;
 }
