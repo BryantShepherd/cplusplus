@@ -2,3 +2,5 @@ Xin chao
 Day la file de test kha nang outstream va instream
 Minh se them mot dong nay nua
 Het roi
+ Adding a new line 
+Them 1 dong vao file vidu.txt

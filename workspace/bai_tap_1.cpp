@@ -1,25 +1,30 @@
 #include <iostream>
 using namespace std;
 int main() {
-	int so_phan_tu, max_index;
-	cin >> so_phan_tu;
-	int list[so_phan_tu];
-	for (int i = 0; i < so_phan_tu; i++) {
-		cin >> list[i];
-	}
-	for (int i = 0; i < so_phan_tu; i+=2) {
-		max_index = i;
-		for (int j = i + 2; j < so_phan_tu; j+=2) {
-			if (list[j] > list[max_index]) {
-				max_index = j;
-			}
+	int m, n;
+	cin >> m >> n;
+	int matrix[m][n+1];
+	
+	for (int i = 0; i < m; i++) {
+		for (int j = 0; j < n; j++) {
+			cin >> matrix[i][j];
 		}
-		int tmp = list[max_index];
-		list[max_index] = list[i];
-		list[i] = tmp;
 	}
-	for (int i = 0; i < so_phan_tu; i++) {
-		cout << list[i] << " ";
+	int gia_tri_chen, cot_chen;
+	cin >> cot_chen >> gia_tri_chen;
+
+	for (int i = 0; i < m; i++) {
+		for (int j = n; j > cot_chen - 1; j--) {
+			matrix[i][j] = matrix[i][j - 1]; 
+		}
+	}
+
+	for (int i = 0; i < m; i++) {
+		matrix[i][cot_chen - 1] = gia_tri_chen;
+		for (int j = 0; j < n + 1; j++) {
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
 	}
 	return 0;
 }
