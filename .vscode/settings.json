@@ -9,6 +9,8 @@
         "tuple": "cpp",
         "utility": "cpp",
         "xiosbase": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "xmemory0": "cpp",
+        "xutility": "cpp"
     }
 }
