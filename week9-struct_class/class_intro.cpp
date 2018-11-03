@@ -9,13 +9,18 @@ class Student {
     int gradDate;
 
     public:
-        void setName(string nameIn) {
+        // void setName(string nameIn) {
+        //     name = nameIn;
+        // }
+        // void setID(int idIn) {
+        //     id = idIn;
+        // }
+        // void setGradDate(int gradDateIn) {
+        //     gradDate = gradDateIn;
+        // }
+        void setData(string nameIn, int idIn, int gradDateIn) {
             name = nameIn;
-        }
-        void setID(int idIn) {
             id = idIn;
-        }
-        void setGradDate(int gradDateIn) {
             gradDate = gradDateIn;
         }
         string getName() {
@@ -37,7 +42,10 @@ class Student {
 //     name = nameIn;
 // }
 int main() {
-    Student s{"Bryant", 14, 2017};
+    // Student s{"Bryant", 14, 2017}; chi dung cai nay khi bien duoc de public
     // s.setName("bryant");
+    Student s;
+    s.setData("Bryant", 2518, 18); //khai bao tat ca gia tri cung mot luc
     cout << s.getName() << endl;
+    s.print();
 }

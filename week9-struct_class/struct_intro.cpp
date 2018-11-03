@@ -6,7 +6,7 @@ struct SVector{
     double x;
     double y;
     
-    // SVector(double _x, double _y) { //CHUA BIET DE LAM GI
+    // SVector(double _x, double _y) { //Dung de gan gia tri cho cac bien neu cnos o private
     //     x = _x;
     //     y = _y;
     // }
