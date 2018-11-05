@@ -1,25 +1,20 @@
 #include <iostream>
 using namespace std;
-class A
-{
-public:
-    A(int x) { std::cout << "A " << x << "\n"; }
-};
- 
-class B
-{
-private:
-    A m_a;
-public:
-    B(int y)
-         : m_a(y-1) // call A(int) constructor to initialize member m_a
-    {
-        std::cout << "B " << y << "\n";
+void in_tu(string a, int n, int max) {
+    for (int j = n; j <= max; j++) {
+        cout << a[j];
     }
-};
- 
+    cout << " ";
+}
 int main()
 {
-    B b(5);
-    return 0;
+    string a;
+    getline(cin, a);
+    int max = a.length() - 1; 
+    for (int i = max; i >= 0; i--) {
+        if ((a[i - 1] == ' ' && a[i] != ' ') || i == 0) {
+            in_tu(a, i, max);
+            max = i - 2;
+        }
+    }
 }

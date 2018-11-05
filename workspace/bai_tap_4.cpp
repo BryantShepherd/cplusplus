@@ -7,10 +7,12 @@ bool kiem_tra(string a, string b) {
         if (a[i] >= 'a' && a[i] <= 'z') {
             a[i]-=32;
         }
+
         if (a[i] = b[k]) {
             k++;
             if (k == b.length()) return true;
         }
+        else if ( a[i] >= 'A' && a[i] <= 'Z') k = 0;
 
     }
     return false;
