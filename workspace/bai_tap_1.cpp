@@ -1,11 +1,11 @@
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 
 int main() {
 	string s;
-	do {
-		cin >> s;
-	} while (s != "\n");
+	cin >> s;
+	cout << strlen(s) << endl;
 	return 0;
 }
