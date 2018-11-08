@@ -1,16 +1,4 @@
 #include <iostream>
-<<<<<<< HEAD
-#include <cstring>
-using namespace std;
-
-
-int main() {
-	string s;
-	cin >> s;
-	cout << strlen(s) << endl;
-	return 0;
-}
-=======
 #include <cmath>
 #include <iomanip>
 #include <sstream>
@@ -51,4 +39,3 @@ int main()
     time1.getTimeDifference(time2);
     return 0;
 }
->>>>>>> 4b14f3b9861686129e6fa637493b0b9dfcc7034c
