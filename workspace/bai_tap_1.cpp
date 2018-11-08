@@ -25,7 +25,7 @@ struct Time
         int time1 = hour*3600 + minute * 60 + second;
         int time2 = other.hour*3600 + other.minute * 60 + other.second;
         int time_dif = abs(time1 - time2);
-        cout << to_format(time_dif/3600) << to_format((time_dif%3600)/60) << to_format(time_dif - (time_dif/3600)*3600 - ((time_dif%3600)/60)*60);
+        cout << to_format(time_dif/3600) << ":" << to_format((time_dif%3600)/60) << ":" << to_format(time_dif - (time_dif/3600)*3600 - ((time_dif%3600)/60)*60);
     }
 };
 
