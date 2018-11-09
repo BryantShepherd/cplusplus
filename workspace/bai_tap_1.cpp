@@ -3,7 +3,7 @@ using namespace std;
 int main()
 {
     int a,b,c;
-    int delta=
+    int delta = 0;
 
-return 0;
+    return 0;
 }

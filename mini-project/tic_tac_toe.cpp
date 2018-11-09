@@ -25,10 +25,9 @@ class Gameboard
                 if (gameSpace[i][0] == gameSpace[i][1] && gameSpace[i][1] == gameSpace[i][2] && gameSpace[i][1] != '-') return true; // hang ngang
                 if (gameSpace[0][i] == gameSpace[1][i] && gameSpace[1][i] == gameSpace[2][i] && gameSpace[1][i] != '-') return true; // hang doc
                 if (gameSpace[0][0] == gameSpace[1][1] && gameSpace[1][1] == gameSpace[2][2] && gameSpace[1][1] != '-') return true; // cheo 1
-                if (gameSpace[0][2] == gameSpace[1][1] && gameSpace[1][1] == gameSpace[2][0] && gameSpace[1][1] != '-') return true; // cheo 2
-                
+                if (gameSpace[0][2] == gameSpace[1][1] && gameSpace[1][1] == gameSpace[2][0] && gameSpace[1][1] != '-') return true; // cheo 2    
             }
-            return false;
+            return false; //tra ve false neu khong dieu kien nao thoa man
         }
 
         void show_gameSpace() { //in game board sau moi nuoc di
