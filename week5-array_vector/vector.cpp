@@ -5,7 +5,7 @@ int main() {
     int a;
     for (int i = 0; i < 3; i++) {
         cin >> a;
-        example.push_back(a);
+        example.push_back(a); //them gia tri a vao cuoi array
     }
     sort(example.begin(), example.end());
     cout << example[0] << " " << example[2];
