@@ -1,61 +1,44 @@
 #include <iostream>
-#include <math.h>
+#include <iomanip>
 using namespace std;
 
-void swap(int &a, int &b) {
-    int tmp = a;
-    a = b;
-    b = tmp;
-}
-
-int main() {
-    int so_phan_tu, min_index, min_index_2, min_pos = -1;
-	cin >> so_phan_tu;
-	int list_so[so_phan_tu];
-	for (int i = 0; i < so_phan_tu; i++) {
-		cin >> list_so[i];
-	}
-    //sap xep so chan
-    for (int i = 0; i < so_phan_tu; i++) {
-        if (list_so[i] % 2 == 0) {
-            min_index = i;
-            min_pos++;
-            
-        }
-        else {
-            continue;
-        }
-        for (int j = i + 1; j < so_phan_tu; j++) {
-            if (list_so[j] < list_so[min_index] && list_so[j] % 2 == 0) {
-                min_index = j;
+float diem_tb_th (float *a) { //so phan tu cua a la 10
+    
+    for (int i = 0; i < 10; i++) {
+        int max = i;
+        for (int j = i; j < 10; j++) {
+            if (a[j] > a[max]) {
+                max = j;
             }
         }
-        
-        swap(list_so[min_index], list_so[min_pos]);
+        float tmp = a[i];
+        a[i] = a[max];
+        a[max] = tmp;
     }
-
-    // //sap_xep_so_le
-    // for (int i = so_phan_tu - 1; i >= 0; i--) {
-    //     if (list_so[i] % 2 == 1) {
-    //         min_index = i;
-    //     }
-    //     else {
-    //         break;
-    //     }
-    //     for (int j = i - 1; j >= 0; j--) {
-    //         if (list_so[j] < list_so[min_index] && list_so[j] % 2 == 1) {
-    //             min_index = j;
-    //         }
-    //     }
-    //     swap(list_so[i], list_so[min_index]);
+    // for (int i = 0; i < 10; i++) {
+    //     cout << a[i] << " ";
     // }
 
-
-
-    //in ket qua
-	for (int i = 0; i < so_phan_tu; i++) {
-		cout << list_so[i] << " ";
-	}
-	return 0;    
+    float avg5 = (a[0] + a[1] + a[2] + a[3] + a[4])/5;
+    return avg5;
 }
-
+int main() {
+    int so_buoi;
+    float diem_so[10];
+    cin >> so_buoi;
+    for (int i = 0; i < 10; i++) {
+        cin >> diem_so[i];
+    }
+    diem_tb_th(diem_so); //sap xep diem thuc hanh
+    float diem_gk[2];
+    cin >> diem_gk[0] >> diem_gk[1];
+    float diem_ck, diem_st;
+    cin >> diem_ck >> diem_st;
+    if (diem_so[4] == 0) cout << 0.0 << endl;
+    else {
+        float tk = diem_tb_th(diem_so)*0.2 + 0.1 * (diem_gk[0] + diem_gk[1]) + 0.6 * (diem_st + diem_ck);
+        if (tk > 10.0) tk = 10.0;
+        cout << fixed << setprecision(1) << tk << endl;
+    }
+    return 0;
+}
