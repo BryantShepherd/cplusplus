@@ -1,9 +1,8 @@
 #include <iostream>
 using namespace std;
-int main() {
-  int number = 20;
-  int *pointer = &number;
-  *pointer = *pointer + 1;
-  cout << number;
-  return 0;
+int main() 
+{
+  int a,b,c;
+  char d=47;
+  cin >> a>>d>>b>>d>>c;
 }
