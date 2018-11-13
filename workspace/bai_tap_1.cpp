@@ -1,20 +1,9 @@
-
 #include <iostream>
-#include <vector>
-
-int main ()
-{
-  std::vector<int> myvector;
-  int myint;
-
-  std::cout << "Please enter some integers (enter 0 to end):\n";
-
-  do {
-    std::cin >> myint;
-    myvector.push_back (myint);
-  } while (myint);
-
-  std::cout << "myvector stores " << int(myvector.size()) << " numbers.\n";
-
+using namespace std;
+int main() {
+  int number = 20;
+  int *pointer = &number;
+  *pointer = *pointer + 1;
+  cout << number;
   return 0;
 }
