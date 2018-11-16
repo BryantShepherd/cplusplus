@@ -48,7 +48,7 @@ int main() {
     mang_1 = new int[spt_1];
     mang_2 = new int[spt_2];
     doc_file(mang_1, mang_2, spt_1, spt_2);
-    for (int i = 0; i < 2; i++) cout << mang_1[i];
+    cout << mang_1[2];
     // xoa_phan_tu(mang_1, mang_2, spt_1, spt_2);
 
 
