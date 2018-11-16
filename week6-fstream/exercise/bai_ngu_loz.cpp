@@ -3,6 +3,7 @@
 //3 5 7 6 9 10 (pt cua mang 1)
 //3 5 10 (pt cua mang 2)
 //xoa nhung phan tu mang 2 co trong mang 1. viet vao file output tung buoc. 
+
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -33,8 +34,6 @@ void ghi_file(int pt_ghi, int xuong_dong) { //xuong_dong la bien de xem da den l
     if (xuong_dong == 1) myFile << endl; //khi xuong_don == 1 thi nhap vao endl;
 }
 void xoa(int *m1, int &a, int can_xoa) {
-    for (int i = 0; i < a; i++) cout << m1[i] << " ";
-    cout << endl;
     for (int i = can_xoa; i < a - 1; i++) m1[i] = m1[i + 1];
     
 }
@@ -61,12 +60,13 @@ void xoa_phan_tu(int *m1, int *m2, int &a, int &b) {
     }
 }
 int main() {
-    int spt_1 = 0, spt_2 = 0; //can khoi tao gia tri, khong thi se gap loi bad_array_new_length
+    int spt_1 = 5, spt_2 = 5; //can khoi tao gia tri, khong thi se gap loi bad_array_new_length.
+    // Khoi tao spt_1 = 10 thi duoc, con bang 0 thi deo?
     int *mang_1, *mang_2;
     mang_1 = new int[spt_1];
     mang_2 = new int[spt_2];
     doc_file(mang_1, mang_2, spt_1, spt_2);
-    for (int i = 0; i < spt_1; i++) cout << mang_1[i] << " ";
+    // for (int i = 0; i < spt_1; i++) cout << mang_1[i] << " ";
     // for (int i = 0; i < spt_2; i++) cout << mang_2[i] << endl;
     xoa_phan_tu(mang_1, mang_2, spt_1, spt_2);
 
