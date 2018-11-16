@@ -15,7 +15,7 @@ void doc_file(int *n) { //n la dia chi nen phai ghi la *n
             myFile >> *n;
         }
     }
-    myFile.close();
+    // myFile.close(); khong co dong nay van chay duoc binh thuongm
 }
 
 int dao_nguoc(int *n) {
@@ -47,7 +47,7 @@ int main() {
 //int a=0;
     doc_file(n);
     ghi_file(dao_nguoc(n));
-    delete n;
-    n=NULL;
+    // delete n; xoa de tiet kiem bo nho?
+    // n=NULL;
     return 0;
 }
