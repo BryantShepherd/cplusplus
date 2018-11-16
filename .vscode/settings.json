@@ -12,6 +12,7 @@
         "xstring": "cpp",
         "xmemory0": "cpp",
         "xutility": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "iosfwd": "cpp"
     }
 }
