@@ -29,11 +29,13 @@ void doc_file(int *m1, int *m2, int &a, int &b) {
 }
 
 void ghi_file(int pt_ghi, int xuong_dong) { //xuong_dong la bien de xem da den luc xuong dong hay chua
-    ofstream myFile("D:\\Coding\\cplusplus\\week6-fstream\\exercise\\output.txt", fstream::app);
+    ofstream myFile("D:\\Coding\\cplusplus\\week6-fstream\\exercise\\output.txt", fstream::app); //fstream::app de viet bo sung vao file, neu khong thi chuong trinh se overwrite file.
     myFile << pt_ghi << " ";
     if (xuong_dong == 1) myFile << endl; //khi xuong_don == 1 thi nhap vao endl;
 }
+
 void xoa(int *m1, int &a, int can_xoa) {
+    //xoa phan tu trong array
     for (int i = can_xoa; i < a - 1; i++) m1[i] = m1[i + 1];
     
 }
@@ -45,7 +47,7 @@ void xoa_phan_tu(int *m1, int *m2, int &a, int &b) {
         for (int j = 0; j < a; j++) {
             if (m1[j] == m2[i]) {
                 
-                xoa(m1, a, j);
+                xoa(m1, a, j); //m1.erase(m1.begin() + j)
                 da_xoa++; //xoa 1 phan tu thi da_xoa++, de xac dinh so phan tu con lai
             
             }
