@@ -21,7 +21,7 @@ class StudentRecord
 };
 
 template<class T>
-StudentRecord<T>::StudentRecord(T input)
+StudentRecord<T>::StudentRecord(T input) //constructor su dung template T
 {
     grade=input;
 }
