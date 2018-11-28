@@ -1,10 +1,5 @@
 #include <iostream>
 using namespace std;
-<<<<<<< HEAD
-
-int main() {
-
-=======
 int main() {
     int a[13] = {9, 8, 7, 1, 2, 8, 7, 5, 6, 9, 11, 12, 1};
     int max = 1;
@@ -27,5 +22,4 @@ int main() {
         cout << a[i] << " ";
     }
     return 0;
->>>>>>> deb73bdc1f1711f4ed2c92db924bdc8205e872e5
 }
