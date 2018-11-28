@@ -1,3 +1,8 @@
+/*
+Xet mot chuoi ki tu nhap vao tu ban phim. Chuoi goi la manh neu co > 8 ki tu, co ca chu hoa, thuong va so.
+Neu chuoi co duoi 4 ki tu hoac chua ki tu dac biet thi chuoi khong hop le. Con lai la chuoi yeu. Xet xem chuoi
+vua nhap vao la chuoi gi.
+*/
 #include <sstream>
 #include <iomanip>
 #include <iostream>
