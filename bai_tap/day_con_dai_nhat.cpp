@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-=======
 /*
 tim day con dai nhat trong mot day so cho truoc va in ra day con do.
 */
->>>>>>> 33b2758381e898a47e98507f6174af8793df2d45
 #include <iostream>
 using namespace std;
 int main() {
@@ -11,28 +8,17 @@ int main() {
     int max = 1;
     int len = 1;
     int vi_tri = 0;
-<<<<<<< HEAD
     int x = 0;
     for (int i = 0; i < 13; i++) {
         if (a[i] < a[i + 1]) {
-=======
-    for (int i = 0; i < 13; i++) {
-        if (a[i] < a[i + 1]) { 
->>>>>>> 33b2758381e898a47e98507f6174af8793df2d45
             len++;
         }
         else {
             if (len > max) {
                 max = len;
-<<<<<<< HEAD
-                vi_tri = i - len + 1;
-            }
-            len = 1;
-=======
                 vi_tri = i - len + 1; //neu do dai day vua tim duoc > max, luu lai vi tri bat dau day.
             }
             len = 1; //khi ma a[i] >= a[i + 1], dat lai len de xet tiep
->>>>>>> 33b2758381e898a47e98507f6174af8793df2d45
         }
     }
     for (int i = vi_tri; i < vi_tri + max; i++) {

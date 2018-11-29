@@ -1,9 +1,8 @@
 #include <iostream>
 using namespace std;
 int tong_le(int n) {
-    while (2*n + 1  0) {
-        return (2*n + 1) + tong_le(2*n - 1);    
-    }
+    if (2*n + 1 > 1) return 2*n + 1 + tong_le(n - 1);
+    else return 1; //neu 2n + 1 = 1, can co de dung ham de quy.
         
 }
 int main() {
