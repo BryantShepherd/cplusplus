@@ -9,7 +9,7 @@ int main() {
     int len = 1;
     int vi_tri = 0;
     for (int i = 0; i < 13; i++) {
-        if (a[i] < a[i + 1]) { 
+        if (a[i] < a[i + 1]) {
             len++;
         }
         else {
