@@ -16,8 +16,9 @@ int main()
     
     //in ra màn hình
     for(int i = 0; i < len; i++){
-        std::cout << array[i] << std::endl;
+        std::cout << array[i] << " ";
     }
+    std::cout << "\n";
     
     // Giải phóng bộ nhớ
     std::cout << "Array[1] truoc khi delele: " << array[1] << std::endl;
