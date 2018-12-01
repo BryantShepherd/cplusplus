@@ -18,7 +18,7 @@ int main() {
     myFile.close();
 
     //ofstream
-    ofstream myFileI("D:\\Coding\\cplusplus\\week6-fstream\\vi_du.txt", ios::app);
+    ofstream myFileI("D:\\Coding\\cplusplus\\week6-fstream\\vi_du.txt", ios::app); //ios::app de viet them vao file thay vi overwrite
     if (!myFileI.is_open()) {
         cout << "Khong mo duoc" << endl;
         exit(1);
