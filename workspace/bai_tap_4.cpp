@@ -1,16 +1,7 @@
 #include <iostream>
-#include <string>
 using namespace std;
-int division(double a, double b) {
-    if (b == 0) throw invalid_argument("divide by zero");
-    return a/b;
-}
 int main() {
-    try {
-       cout << division(10, 0);
-    }
-    catch(...) {
-        cout << "no" << endl;
-    }
+    int n = 0;
+    cout << (n == 1) ? "ok" : "not ok";
     return 0;
 }
