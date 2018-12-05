@@ -12,20 +12,17 @@ int main() {
                 /* code */
                 if (vi_tri == 1) vi_tri = 2;
                 else if (vi_tri == 2) vi_tri = 1;
-                else if (vi_tri == 3) vi_tri = 3;
                 break;
 
             case 'B'/* constant-expression */:
                 /* code */
-                if (vi_tri == 1) vi_tri = 1;
-                else if (vi_tri == 2) vi_tri = 3;
+                if (vi_tri == 2) vi_tri = 3;
                 else if (vi_tri == 3) vi_tri = 2;
                 break;
 
             case 'C'/* constant-expression */:
                 /* code */
                 if (vi_tri == 1) vi_tri = 3;
-                else if (vi_tri == 2) vi_tri = 2;
                 else if (vi_tri == 3) vi_tri = 1;
                 break;
 
