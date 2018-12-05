@@ -36,5 +36,5 @@ int main() {
         }
     }
     if (thang == true) cout << nguoi_thang << " da chien thang." << endl;
-    else cout << "gane dang choi." << endl;
+    else cout << "game dang choi." << endl;
 }

@@ -5,7 +5,7 @@ using namespace std;
 int getSum(vector<int> numbers)
 {
     int sum = 0;
-    for (int i: numbers)
+    for (int i: numbers) //voi moi i thuoc numbers
         sum = sum + i;
     return sum;
 }
