@@ -48,4 +48,11 @@ int main() {
     s.setData("Bryant", 2518, 18); //khai bao tat ca gia tri cung mot luc
     cout << s.getName() << endl;
     s.print();
+    cout << endl;
+    Student classA[10];
+    for (int i = 0; i < 10; i++) {
+        classA[i].setData("Name", i + 100, i + 1000);
+        classA[i].print();
+        cout << endl;
+    }
 }

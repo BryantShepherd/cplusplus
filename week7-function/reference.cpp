@@ -11,6 +11,9 @@ int main() {
 
     refnumber = 100; //thay doi gia tri bien tham chieu
     cout << "Sau khi thay refnumber = 100: " << number << " " << refnumber << endl;
+
+    number = 50;
+    cout << "Sau khi thay number = 50: " << number << " " << refnumber << endl;
     // -> huu ich khi dung trong function
 
     /*Nhu the nghia la, trong ham nhu nay...
