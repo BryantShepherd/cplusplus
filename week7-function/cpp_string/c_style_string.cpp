@@ -6,7 +6,7 @@ int main() {
     cout << myName << endl;
     // myName = "bonor"; khong gan lai theo cach nay duoc
     myName[5] = 'f';
-    cout << myName << endl;
+    cout << myName << endl; //ket qua: (hellof@). Do khi khoi tao gia tri myName[5] la NULL de dung in, nhung do minh thay thanh 'f' nen chuong trinh in den het chuoi.
 
     return 0;
 }

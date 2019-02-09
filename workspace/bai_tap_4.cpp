@@ -39,7 +39,7 @@ int main() {
                 if (tmp_operand == 'x') tmp_ket_qua *= tmp_operator;
                 else tmp_ket_qua /= tmp_operator;
                 cin >> tmp_operand;
-            } while (tmp_operand == 'x' || tmp_operand == '/');
+            } while (tmp_operand == 'x' || tmp_operand == '/'); //neu tmp_operand la cong hoac tru
 
             if (prev_operand == '+' || prev_operand == '-') {
                 if (prev_operand == '+') ket_qua += tmp_ket_qua;
