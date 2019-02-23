@@ -21,6 +21,7 @@ int main() {
                 if (tmp_operand == 'x') tmp_ket_qua *= tmp_operator;
                 else tmp_ket_qua /= tmp_operator;
                 cin >> tmp_operand;
+                cout << "=" << tmp_ket_qua << endl;
             } while (tmp_operand == 'x' || tmp_operand == '/'); //neu tmp_operand la cong hoac tru.
 
             if (prev_operand == '+' || prev_operand == '-') {
@@ -37,10 +38,10 @@ int main() {
             if (prev_operand == '+') ket_qua += num_operator;
             else ket_qua -= num_operator;
         }
-        cout << "prev: " << prev_operand << ", current: " << current_operand << endl;
+        // cout << "prev: " << prev_operand << ", current: " << current_operand << endl;
         prev_operand = current_operand;
-        cout << "Display: " << ket_qua << endl;
+        cout << "=" << ket_qua << endl;
     } while (current_operand != '=');
     cout << "The result: " << ket_qua << endl;
-
+    return 0;
 }
