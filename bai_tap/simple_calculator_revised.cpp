@@ -46,6 +46,8 @@ int main() {
 
     cout << "   =" << result << endl;
     while(notQuit) {
+        if (op == A_MODE || op == M_MODE || op == F_MODE) cal_mode = op;
+        
         if (cal_mode == 'a') {
             cout << "Mode: A" << endl;
             if (op != '=') prev_op = op;
@@ -109,24 +111,24 @@ int main() {
                     cout << "   =" << result << endl;
                     break;
 
-                //Change Mode
-                case A_MODE:
-                    cal_mode = 'a';
-                    break;
+                // //Change Mode
+                // case A_MODE:
+                //     cal_mode = 'a';
+                //     break;
 
-                case F_MODE:
-                    cal_mode = 'f';
-                    break;
+                // case F_MODE:
+                //     cal_mode = 'f';
+                //     break;
 
-                case M_MODE:
-                    cal_mode = 'm';
-                    break;
+                // case M_MODE:
+                //     cal_mode = 'm';
+                //     break;
 
                 default:
-                    // cin.clear();
-                    // cin.ignore(256, '\n');
-                    cout << "error: unidentified operator" << endl;
-                    exit(EXIT_FAILURE);
+                    cin.clear();
+                    cin.ignore(256, '\n');
+                    // cout << "error: unidentified operator" << endl;
+                    // exit(EXIT_FAILURE);
                     break;
             }
         }
@@ -200,7 +202,7 @@ int main() {
                     cout << "   =" << result << endl;
                     break;
 
-                case POWER:
+                case POWER: //chuyen POWER vao f_mode?
                     cin >> f_trig;
                     cin >> num;
                     if (!cin) {
@@ -251,23 +253,10 @@ int main() {
                     result = 0;
                     cout << "   =" << result << endl;
                     break;
-
-                //Change Mode
-                case A_MODE:
-                    cal_mode = 'a';
-                    break;
-
-                case F_MODE:
-                    cal_mode = 'f';
-                    break;
-
-                case M_MODE:
-                    cal_mode = 'm';
-                    break;
                     
                 default:
-                    cout << "error: unidentified operator" << endl;
-                    exit(EXIT_FAILURE);
+                    cin.clear();
+                    cin.ignore(256, '\n');
                     break;
             }
             
@@ -301,22 +290,10 @@ int main() {
                 //System
                 case QUIT:
                     return 0;
-
-                //Change Mode
-                case A_MODE:
-                    cal_mode = 'a';
-                    break;
-
-                case F_MODE:
-                    cal_mode = 'f';
-                    break;
-
-                case M_MODE:
-                    cal_mode = 'm';
-                    break;
                     
                 default:
-                    cout << "error: unidentified operator" << endl;
+                    cin.clear();
+                    cin.ignore(256, '\n');
                     break;
             }
         }
