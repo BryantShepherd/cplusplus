@@ -24,7 +24,6 @@ struct Triangle {
     double AC = A.getLength(C);
     double CB = C.getLength(B);
 
-    Triangle
 };
 int main() {
     Point diemA(1,2);
