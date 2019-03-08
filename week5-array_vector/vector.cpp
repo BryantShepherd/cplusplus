@@ -11,8 +11,11 @@ int main() {
         cin >> a;
         example.push_back(a); //them gia tri a vao cuoi array
     }
-    sort(example.begin(), example.end()); //sort(example, example + n)
-    reverse(example.begin(), example.end());
-    cout << example[0] << " " << example[2];
+    // sort(example.begin(), example.end()); //sort(example, example + n)
+    // reverse(example.begin(), example.end());
+    // cout << example[0] << " " << example[2];
+    for (auto i:example) {
+        cout << i << endl;
+    }
     return 0;
-}
+} 
