@@ -34,7 +34,7 @@ int main() {
     const char SINE = 's';
     const char TANGENT = 't';
     const char REVOKE_MEMORY = 'r';
-    const double PI = 3.14159265358979323846; //co san trong c++, ve nha tim 
+    const double PI = 3.14159265358979323846; //BOI VI PI DUNG DE DOI SANG RADIAN, NEN DAT PI/180 LAM CONST 
     //khi nguoi dung nhap p thi gia tri p se thay bang pi?
     //define != const. define la no se tim tat ca su xuat hien cua pi va thay bang 3.14, const thi giong bien.
 
@@ -54,7 +54,7 @@ int main() {
             cin >> op;
             switch(op) {
                 //Math Operation
-                case ADD:
+                case ADD: //CASE SU DUNG {}
                     // cin >> num;
                     // //xu ly loi: neu nhap nham num se =0 lien tuc
                     // result += num;
@@ -62,7 +62,7 @@ int main() {
                     add(num, result);
                     break;
                 
-                case MINUS:
+                case MINUS: 
                     subtract(num, result);
                     break;
                 
