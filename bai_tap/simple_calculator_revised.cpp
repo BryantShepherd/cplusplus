@@ -255,7 +255,6 @@ int main() {
                     break;
                     
                 default:
-                    cin.clear();
                     cin.ignore(256, '\n');
                     break;
             }
@@ -292,7 +291,6 @@ int main() {
                     return 0;
                     
                 default:
-                    cin.clear();
                     cin.ignore(256, '\n');
                     break;
             }
