@@ -14,7 +14,7 @@ struct Entry{
         number = _number;
     }
     void scanName() {
-        fflush(stdin); //cin.ignore()
+        fflush(stdin); //cin.ignore(), sap dung getline nen can xoa cache
         cout << "\tName: ";
         getline(cin, name);
     }
