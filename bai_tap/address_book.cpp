@@ -13,6 +13,7 @@ struct Entry{
         name = _name;
         number = _number;
     }
+    //should I use function, or just cin >> entry.name?
     void scanName() {
         fflush(stdin); //cin.ignore(), sap dung getline nen can xoa cache
         cout << "\tName: ";
@@ -42,22 +43,22 @@ int main() {
     const char EDIT_ENTRY = '3';
     const char PRINT_ALL_ENTRIES = '4';
     const char CLEAR_ALL_ENTRIES = '5';
-    const char QUIT = '6';
+    const char SEARCH_ENTRY = '6';
+    const char QUIT = '0';
 
     char chooseAction;
     string entryName, entryNumber;
-    Entry newEntry;
+    Entry newEntry = {"Miller", "0988833322"};
     vector <Entry> entryList;
     bool notQuit = true;
-
+    //NOTE: divide into sections of choices. Press More to show more option. 
     cout << "\t1. Add an entry\n";
     cout << "\t2. Remove an entry.\n";
     cout << "\t3. Edit an entry\n";
     cout << "\t4. Print all entríe.\n";
     cout << "\t5. Clear all entries.\n"; 
-    cout << "\t6. QUIT\n";
+    cout << "\t0. QUIT\n";
     cout << "\t------------------\n";
-    
     while(notQuit) {
         cout << "Choose Action: ";
         cin >> chooseAction;
@@ -67,8 +68,10 @@ int main() {
                 break;
             }
             case ADD_ENTRY: {
+                //Get user input
                 newEntry.scanName();
                 newEntry.scanNumber();
+                //Append to contact list
                 entryList.push_back(newEntry);
                 break;
             }
@@ -83,18 +86,41 @@ int main() {
                 break;
             }
             case PRINT_ALL_ENTRIES: {
-                cout << "All entries" << endl;
+                //NOTE: keep the contact in a file.
+                cout << "All entries: " << endl;
                 printAllEntries(entryList);
                 break;
             }
             case EDIT_ENTRY: {
                 int editElem;
                 printAllEntries(entryList);
-                cout << "Erase element (-1 to back): ";
+                cout << "Edit element (-1 to back): ";
+                //NOTE: check if user want to edit one or both info
                 cin >> editElem;
                 if (editElem == -1 || editElem > entryList.size()) break;
+
                 entryList[editElem - 1].scanName();
                 entryList[editElem - 1].scanNumber();
+                break;
+            }
+            case CLEAR_ALL_ENTRIES: {
+                entryList.clear();
+                //NOTE: confirm before deleting
+                cout << "\tContact list deleted.\n";
+                break;
+            }
+            case SEARCH_ENTRY: {
+                string searchQuery;
+                cin >> searchQuery;
+                for (auto i : entryList) {
+                    //NOTE: clean the code
+                    if ((searchQuery[0] <= '9' && searchQuery[0] >= '0') && (i.getNumber().find(searchQuery) != -1)) {
+                        cout << "\tName: " << i.getName() << "\t" << "Number: " << i.getNumber() << endl;    
+                    }
+                    else if (((searchQuery[0] <= 'z' && searchQuery[0] >= 'a') || (searchQuery[0] <= 'Z' && searchQuery[0] >= 'A')) && (i.getName().find(searchQuery) != -1)) {
+                        cout << "\tName: " << i.getName() << "\t" << "Number: " << i.getNumber() << endl;
+                    }
+                }
                 break;
             }
             case QUIT: {
@@ -107,9 +133,16 @@ int main() {
 }
 
 void printAllEntries(vector <Entry> &entries) {
-    int list_count = 1;
-    for (auto i : entries) {
-        cout << "\t" << list_count << ". Name: " << i.name << "\t" << "Number: " << i.number << endl; //in thang hang, hoac tao mot khoang trong de in danh ba o dau.
-        list_count++;
+    if (entries.size() > 0) {
+        int list_count = 1;
+        //NOTE: line up when print out. OR keep a space at the beginning of the program to show contact.
+        for (auto i : entries) {
+            cout << "\t" << list_count << ". Name: " << i.name << "\t" << "Number: " << i.number << endl; 
+            list_count++;
+        }
     }
+    else {
+        cout << "\tContact list is empty.\n";
+    }
+    
 }

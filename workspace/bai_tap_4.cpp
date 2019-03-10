@@ -33,10 +33,13 @@ struct Entry{
 };
 
 int main() {
-    vector <Entry> entryList;
-    Entry newEntry("Tuấn Anh", "09019481");
-    entryList.push_back(newEntry);
-    cout << newEntry.name << " " << newEntry.number << endl;
-    entryList[0].printInfo();
+    string a = "hellodarknessmyoldfriendlonesi";
+    string search_query = "lo";
+    int n = 0;
+    while(n != -1) {
+        n = a.find(search_query, n + search_query.size());
+        cout << n << endl;
+    }
+
     return 0;
 }
