@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 using namespace std;
 
 struct Entry{
@@ -36,6 +37,8 @@ struct Entry{
 };
 
 void printAllEntries(vector <Entry> &entries);
+string stringToLower(string a);
+void searchEntry(Entry &entryElem, string &searchQuery);
 
 int main() {
     const char ADD_ENTRY = '1';
@@ -44,12 +47,13 @@ int main() {
     const char PRINT_ALL_ENTRIES = '4';
     const char CLEAR_ALL_ENTRIES = '5';
     const char SEARCH_ENTRY = '6';
+    //NOTE: sort by first name, last name, by phone number
     const char QUIT = '0';
 
     char chooseAction;
     string entryName, entryNumber;
-    Entry newEntry = {"Miller", "0988833322"};
-    vector <Entry> entryList;
+    Entry newEntry;
+    vector <Entry> entryList {{"Alvin Levenson", "(487) 417-0829"}, {"Ben Balake", "(743) 395-1377"}, {"Chris Brown", "(357) 679-3200"}, {"Chris MyAss", "(803) 563-1534"}, {"David Copperfield", "(793) 497-9775"}, {"Emilia Mayweather", "(743) 796-6980"}};
     bool notQuit = true;
     //NOTE: divide into sections of choices. Press More to show more option. 
     cout << "\t1. Add an entry\n";
@@ -111,15 +115,14 @@ int main() {
             }
             case SEARCH_ENTRY: {
                 string searchQuery;
-                cin >> searchQuery;
+                fflush(stdin);
+                getline(cin, searchQuery);
+
                 for (auto i : entryList) {
-                    //NOTE: clean the code
-                    if ((searchQuery[0] <= '9' && searchQuery[0] >= '0') && (i.getNumber().find(searchQuery) != -1)) {
-                        cout << "\tName: " << i.getName() << "\t" << "Number: " << i.getNumber() << endl;    
-                    }
-                    else if (((searchQuery[0] <= 'z' && searchQuery[0] >= 'a') || (searchQuery[0] <= 'Z' && searchQuery[0] >= 'A')) && (i.getName().find(searchQuery) != -1)) {
-                        cout << "\tName: " << i.getName() << "\t" << "Number: " << i.getNumber() << endl;
-                    }
+                    //NOTE: clean the code, count the time search Query appear then print out in the that order. 
+                    //NOTE: maybe add search by first name, last name, ...
+                    //NOTE: print something if find nothing.
+                    searchEntry(i, searchQuery);
                 }
                 break;
             }
@@ -145,4 +148,20 @@ void printAllEntries(vector <Entry> &entries) {
         cout << "\tContact list is empty.\n";
     }
     
+}
+
+string stringToLower(string a) {
+    for (int i = 0; i < a.size(); i++) {
+        a[i] = tolower(a[i]);
+    }
+    return a;
+}
+
+void searchEntry(Entry &entryElem, string &searchQuery) {
+    string lowerName = stringToLower(entryElem.name);
+    string lowerSearchQuery = stringToLower(searchQuery);
+
+    if ((lowerName.find(lowerSearchQuery) != -1) || (entryElem.getNumber().find(searchQuery) != -1)) {
+        cout << "\tName: " << entryElem.getName() << "\t" << "Number: " << entryElem.getNumber() << endl;
+    }
 }
