@@ -26,7 +26,7 @@ struct Entry{
         getline(cin, number);
     }
     void printInfo() {
-        cout << name << " " << number << endl;
+        cout << "Name: " << name << "\tNumber: " << number << endl;
     }
     string getName() {
         return name;
@@ -38,7 +38,7 @@ struct Entry{
 
 void printAllEntries(vector <Entry> &entries);
 string stringToLower(string a);
-void searchEntry(Entry &entryElem, string &searchQuery);
+void printSearchResults(Entry &entryElem, string &searchQuery, bool &foundResult);
 
 int main() {
     const char ADD_ENTRY = '1';
@@ -61,6 +61,7 @@ int main() {
     cout << "\t3. Edit an entry\n";
     cout << "\t4. Print all entríe.\n";
     cout << "\t5. Clear all entries.\n"; 
+    cout << "\t6. Search all entries\n";
     cout << "\t0. QUIT\n";
     cout << "\t------------------\n";
     while(notQuit) {
@@ -115,14 +116,20 @@ int main() {
             }
             case SEARCH_ENTRY: {
                 string searchQuery;
+                bool foundResult = false;
+
                 fflush(stdin);
+                cout << "\tSearch: ";
                 getline(cin, searchQuery);
 
                 for (auto i : entryList) {
                     //NOTE: clean the code, count the time search Query appear then print out in the that order. 
-                    //NOTE: maybe add search by first name, last name, ...
-                    //NOTE: print something if find nothing.
-                    searchEntry(i, searchQuery);
+                    //NOTE: maybe add search by first name, last name, ...?
+                    //NOTE: search and edit/delete?
+                    printSearchResults(i, searchQuery, foundResult);
+                }
+                if (foundResult == false) { //NOTE: maybe put the cout 
+                    cout << "\tNo result found.\n";  
                 }
                 break;
             }
@@ -140,7 +147,8 @@ void printAllEntries(vector <Entry> &entries) {
         int list_count = 1;
         //NOTE: line up when print out. OR keep a space at the beginning of the program to show contact.
         for (auto i : entries) {
-            cout << "\t" << list_count << ". Name: " << i.name << "\t" << "Number: " << i.number << endl; 
+            cout << "\t" << list_count << ". ";
+            i.printInfo();
             list_count++;
         }
     }
@@ -157,11 +165,14 @@ string stringToLower(string a) {
     return a;
 }
 
-void searchEntry(Entry &entryElem, string &searchQuery) {
+void printSearchResults(Entry &entryElem, string &searchQuery, bool &foundResult) {
+    //chuyen search query va thong tin trong danh ba thanh lower case de de tim.
     string lowerName = stringToLower(entryElem.name);
     string lowerSearchQuery = stringToLower(searchQuery);
 
     if ((lowerName.find(lowerSearchQuery) != -1) || (entryElem.getNumber().find(searchQuery) != -1)) {
-        cout << "\tName: " << entryElem.getName() << "\t" << "Number: " << entryElem.getNumber() << endl;
+        cout << "\t";
+        entryElem.printInfo();
+        foundResult = true;
     }
 }
