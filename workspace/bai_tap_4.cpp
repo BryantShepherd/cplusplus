@@ -35,11 +35,13 @@ struct Entry{
 int main() {
     string a = "hellodarknessmyoldfriendlonesi";
     string search_query = "lo";
+    vector <int> vec{1,2,3,4,5,6,7};
     int n = 0;
-    while(n != -1) {
-        n = a.find(search_query, n + search_query.size());
-        cout << n << endl;
+    for (int i = 0; i < a.size(); i++) {
+        cout << i << ",";
+        a[i] = toupper(a[i]);
     }
+    cout << endl << a;
 
     return 0;
 }

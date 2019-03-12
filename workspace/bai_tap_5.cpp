@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
 using namespace std;
 
 struct Point {
@@ -16,6 +17,9 @@ struct Point {
     double getLength(Point otherPoint) {
         return sqrt((x - otherPoint.x)*(x - otherPoint.x) + (y - otherPoint.y)*(y - otherPoint.y));
     }
+    void printCoordinate() {
+        cout << x << "," << y << endl; 
+    }
 };
 
 struct Triangle {
@@ -26,8 +30,12 @@ struct Triangle {
 
 };
 int main() {
+    vector <Point> newList {{1,2}, {2,3}};
     Point diemA(1,2);
     Point diemB(3,4);
+    for (auto i: newList) {
+        i.printCoordinate();
+    }
     cout << diemA.getLength(diemB);
     return 0;
 }

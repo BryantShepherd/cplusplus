@@ -136,7 +136,7 @@ int main() {
 }
 
 void printAllEntries(vector <Entry> &entries) {
-    if (entries.size() > 0) {
+    if (!entries.empty()) {
         int list_count = 1;
         //NOTE: line up when print out. OR keep a space at the beginning of the program to show contact.
         for (auto i : entries) {
