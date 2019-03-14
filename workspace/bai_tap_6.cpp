@@ -72,8 +72,8 @@ int main() {
     
     //NOTE: divide into sections of choices. Press More to show more option. 
     
-    _setmode(_fileno(stdin), _O_U16TEXT);
-    _setmode(_fileno(stdout), _O_U16TEXT);
+    // _setmode(_fileno(stdin), _O_U16TEXT);
+    // _setmode(_fileno(stdout), _O_U16TEXT);
 
     while(notQuit) {
         if (chooseAction == PREV_PAGE || chooseAction == NEXT_PAGE) {

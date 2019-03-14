@@ -15,7 +15,7 @@ void doc_file(int *n) { //n la dia chi nen phai ghi la *n
             myFile >> *n;
         }
     }
-    // myFile.close(); khong co dong nay van chay duoc binh thuongm
+    myFile.close(); //khong co dong nay van chay duoc binh thuongm
 }
 
 int dao_nguoc(int *n) {
