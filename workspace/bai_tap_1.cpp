@@ -4,11 +4,13 @@
 #include <io.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <algorithm>
 
 
 using namespace std;
 
 struct Entry{
+    //add tag, to specify which group an entry belong to.
     string name, number;
     
     Entry() {
@@ -45,7 +47,8 @@ void printAllEntries(vector <Entry> &entries);
 string stringToLower(string a);
 void printSearchResults(Entry &entryElem, string &searchQuery, bool &foundResult);
 bool askToConfirm();
-void sortByName(Entry entry1, Entry entry2);
+bool compareLastName(Entry entry1, Entry entry2);
+string getAlias(string &a); //lay ten viet tat (de sap xep danh ba)
 
 int main() {
     const char ADD_ENTRY = '1';
@@ -197,7 +200,8 @@ int main() {
                 }
                 case SORT_ENTRIES: {
                     //sort by?
-
+                    sort(entryList.begin(), entryList.end(), compareLastName);
+                    printAllEntries(entryList);
                     break;
                 }
                 case SORT_BY_GROUP:
@@ -237,7 +241,7 @@ string stringToLower(string a) {
 
 void printSearchResults(Entry &entryElem, string &searchQuery, bool &foundResult) {
     //chuyen search query va thong tin trong danh ba thanh lower case de de tim.
-    string lowerName = stringToLower(entryElem.name);
+    string lowerName = stringToLower(entryElem.getName());
     string lowerSearchQuery = stringToLower(searchQuery);
 
     if ((lowerName.find(lowerSearchQuery) != -1) || (entryElem.getNumber().find(searchQuery) != -1)) {
@@ -253,4 +257,23 @@ bool askToConfirm() {
     cin >> confirm;
     if (confirm == 'y') return true;
     return false;
+}
+
+string getAlias(string &a) { 
+    string alias;
+    for (int i = 0; i < a.size(); i++) {
+        if ((a[i-1] == ' ' && a[i] != ' ') || i == 0) {
+            alias += a[i];
+        }
+    }
+    return alias;
+}
+
+bool compareLastName(Entry entry1, Entry entry2) {
+    string input1 = entry1.getName(), input2 = entry2.getName();
+    string alias1 = getAlias(input1);
+    string alias2 = getAlias(input2);
+    reverse(alias1.begin(), alias1.end()); //xep theo ten nen can reverse, xep theo ho thi khong can
+    reverse(alias2.begin(), alias2.end());
+    return alias1 < alias2;
 }

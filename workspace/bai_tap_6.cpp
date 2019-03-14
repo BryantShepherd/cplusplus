@@ -72,6 +72,7 @@ int main() {
     
     //NOTE: divide into sections of choices. Press More to show more option. 
     
+    //use Vietnamese characters
     _setmode(_fileno(stdin), _O_U16TEXT);
     _setmode(_fileno(stdout), _O_U16TEXT);
 
