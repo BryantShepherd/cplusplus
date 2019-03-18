@@ -13,7 +13,7 @@ struct Entry{
     //add tag, to specify which group an entry belong to.
     int id;
     string name, number;
-    //string group;
+    string group;
     
     Entry() {
         id = 0;
@@ -36,19 +36,22 @@ struct Entry{
         cout << "\tNumber: ";
         getline(cin, number);
     }
-    // void scanGroup() {
-    //     fflush(stdin);
-    //     cout << "\tGroup: ";
-    //     getline(cin, group);
-    // }
+    void scanGroup() {
+        fflush(stdin);
+        cout << "\tGroup: ";
+        getline(cin, group);
+    }
     void printInfo() {
-        cout << id << ". Name: " << name << "\tNumber: " << number << endl;
+        cout << id << ". Name: " << name << "\n\t  Number: " << number << endl;
     }
     string getName() {
         return name;
     }
     string getNumber() {
         return number;
+    }
+    string getGroup() {
+        return group;
     }
 };
 
@@ -61,6 +64,7 @@ string getAlias(string &a); //lay ten viet tat (de sap xep danh ba)
 void resetEntryId(vector <Entry> &entries);
 void saveToFile(vector <Entry> &entries);
 void loadFromFile(vector <Entry> &entries);
+void searchAction(vector <Entry> &entries);
 
 int main() {
     const char ADD_ENTRY = '1';
@@ -81,28 +85,30 @@ int main() {
     char chooseAction = PREV_PAGE; //to start the program
     Entry newEntry;
     int page_number = 1, max_page = 2;
-    int deleteElem, editElem, elem;
+    int deleteElem, editElem;
     bool notQuit = true;
 
     // vector <Entry> entryList {{1, "Alvin Levenson", "(487) 417-0829"}, {2, "Ben Balake", "(743) 395-1377"}, {3, "Chris Brown", "(357) 679-3200"}, {4, "Chris MyAss", "(803) 563-1534"}, {5, "David Copperfield", "(793) 497-9775"}, {6, "Emilia Mayweather", "(743) 796-6980"}}; 
     vector <Entry> entryList;
     loadFromFile(entryList);
     while(notQuit) {
+        if (chooseAction != PREV_PAGE && chooseAction != NEXT_PAGE && chooseAction != QUIT) system("pause");
+        system("cls");   
+
         if (chooseAction == QUIT) {
             saveToFile(entryList);
             cout << "Contact list saved to contact_list.txt" << endl;
+            system("pause");
             exit(0);
         }
         
         if (chooseAction == PREV_PAGE || chooseAction == NEXT_PAGE) {
-            system("cls");
             if (chooseAction == PREV_PAGE && page_number != 1) {
                 page_number--;
             }
             else if (chooseAction == NEXT_PAGE && page_number != max_page) {
                 page_number++;
             }
-            
         }
 
         switch(page_number) {
@@ -141,6 +147,7 @@ int main() {
                     newEntry.id = entryList.size() + 1;
                     newEntry.scanName();
                     newEntry.scanNumber();
+                    newEntry.scanGroup();
 
                     //Append to contact list
                     entryList.push_back(newEntry);
@@ -171,7 +178,11 @@ int main() {
                     cout << "Edit element (-1 to back): ";
                     //NOTE: check if user want to edit one or both info
                     cin >> editElem;
-                    if (editElem < 1 || editElem > entryList.size()) break;
+                    if (editElem < 1 || editElem > entryList.size() || !cin) {
+                        cin.clear();
+                        cin.ignore(256, '\n');
+                        break;
+                    }  
 
                     entryList[editElem - 1].scanName();
                     entryList[editElem - 1].scanNumber();
@@ -206,27 +217,13 @@ int main() {
 
                     for (auto i : entryList) { 
                         //NOTE: maybe add search by first name, last name, ...?
-                        //NOTE: search and edit/delete?
                         printSearchResults(i, searchQuery, foundResult);
                         
                     }
-                    if (foundResult == false) { //NOTE: maybe put the cout 
+                    if (foundResult == false) {
                         cout << "\tNo result found.\n";  
                     }
-                    // cout << "\tChoose entry to edit/remove: ";
-                    // cin >> elem;
-                    // cout << "\t1. Edit\n" << "\t2. Delete\n";
-                    // cin >> actionAfterSearch;
-                    // if (actionAfterSearch == 1) {
-                    //     //Use editEntry function
-                    // }
-                    // else if (actionAfterSearch == 2) {
-                    //     //Use deleteEntry function
-                    // }
-                    // else {
-                    //     cin.clear();
-                    //     cin.ignore(256, '\n');
-                    // }
+                    searchAction(entryList); //choose search result and edit/remove
                     break;
                 }
                 case SORT_ENTRIES: {
@@ -240,8 +237,7 @@ int main() {
                     break;
             }
         }
-        system("pause");
-        system("cls");   
+        
     }
     return 0;
 }
@@ -343,4 +339,42 @@ void loadFromFile(vector <Entry> &entries) {
         }
         inFile.close();        
     }
+}
+
+void searchAction(vector <Entry> &entries) {
+    const int EDIT_SEARCH_RESULT = 1;
+    const int DEL_SEARCH_RESULT = 2;
+    int elem, tmpChooseAction;
+    cout << "\tChoose entry to edit/remove: ";
+    cin >> elem;
+    if (elem < 1 || elem > entries.size() || !cin) {
+        cout << "ERROR: element out of range" << endl;
+        cin.ignore(256, '\n');
+    } 
+    else {
+        cout << "\t\t1. Edit entry" << endl;
+        cout << "\t\t2. Remove entry" << endl;
+        cout << "\n\t\t0. Back" << endl;
+        cout << "\t\t Edit/remove: ";
+        cin >> tmpChooseAction;
+        switch(tmpChooseAction) {
+            default: {
+                cin.ignore(256, '\n');
+                break;
+            }
+            case EDIT_SEARCH_RESULT: {
+                cout << "\t";
+                entries[elem - 1].scanName();
+                cout << "\t";
+                entries[elem - 1].scanNumber();
+                break;
+            }
+            case DEL_SEARCH_RESULT: {
+                cout << "\t" << entries[elem - 1].getName() << " deleted successfully!" << endl;
+                entries.erase(entries.begin() + elem - 1);
+                break;
+            }
+        }
+    }
+    
 }
