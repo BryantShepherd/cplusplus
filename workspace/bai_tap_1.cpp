@@ -1,21 +1,27 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <io.h>
-#include <fcntl.h>
-#include <stdio.h>
-
+// #include <io.h>
+// #include <fcntl.h>
+// #include <stdio.h>
+#include <algorithm>
+#include <fstream>
 
 using namespace std;
-
+//load when start, save when exit
 struct Entry{
+    //add tag, to specify which group an entry belong to.
+    int id;
     string name, number;
+    //string group;
     
     Entry() {
+        id = 0;
         name = "unknown"; 
         number = "unknown";
     }
-    Entry(string _name, string _number) {
+    Entry(int _id, string _name, string _number) {
+        id = _id;
         name = _name;
         number = _number;
     }
@@ -30,8 +36,13 @@ struct Entry{
         cout << "\tNumber: ";
         getline(cin, number);
     }
+    // void scanGroup() {
+    //     fflush(stdin);
+    //     cout << "\tGroup: ";
+    //     getline(cin, group);
+    // }
     void printInfo() {
-        cout << "Name: " << name << "\tNumber: " << number << endl;
+        cout << id << ". Name: " << name << "\tNumber: " << number << endl;
     }
     string getName() {
         return name;
@@ -45,7 +56,11 @@ void printAllEntries(vector <Entry> &entries);
 string stringToLower(string a);
 void printSearchResults(Entry &entryElem, string &searchQuery, bool &foundResult);
 bool askToConfirm();
-void sortByName(Entry entry1, Entry entry2);
+bool compareLastName(Entry entry1, Entry entry2);
+string getAlias(string &a); //lay ten viet tat (de sap xep danh ba)
+void resetEntryId(vector <Entry> &entries);
+void saveToFile(vector <Entry> &entries);
+void loadFromFile(vector <Entry> &entries);
 
 int main() {
     const char ADD_ENTRY = '1';
@@ -55,26 +70,30 @@ int main() {
     const char CLEAR_ALL_ENTRIES = '5';
 
     const char SEARCH_ENTRY = '1';
-    const char SAVE_TO_TXT = '2';
-    const char SORT_ENTRIES = '3';
-    const char SORT_BY_GROUP = '4';
+    const char SORT_ENTRIES = '2';
+    const char FILTER_BY_GROUP = '3';
 
     const char PREV_PAGE = '8';
     const char NEXT_PAGE = '9';
     const char QUIT = '0';
-    //NOTE: sort by first name, last name, by phone number
-    //NOTE: save as file txt
     //NOTE: protect with password 
 
     char chooseAction = PREV_PAGE; //to start the program
-    string entryName, entryNumber;
-    Entry newEntry {"unknown", "unknown"};
+    Entry newEntry;
     int page_number = 1, max_page = 2;
+    int deleteElem, editElem, elem;
     bool notQuit = true;
 
-    vector <Entry> entryList {{"Alvin Levenson", "(487) 417-0829"}, {"Ben Balake", "(743) 395-1377"}, {"Chris Brown", "(357) 679-3200"}, {"Chris MyAss", "(803) 563-1534"}, {"David Copperfield", "(793) 497-9775"}, {"Emilia Mayweather", "(743) 796-6980"}}; 
-
+    // vector <Entry> entryList {{1, "Alvin Levenson", "(487) 417-0829"}, {2, "Ben Balake", "(743) 395-1377"}, {3, "Chris Brown", "(357) 679-3200"}, {4, "Chris MyAss", "(803) 563-1534"}, {5, "David Copperfield", "(793) 497-9775"}, {6, "Emilia Mayweather", "(743) 796-6980"}}; 
+    vector <Entry> entryList;
+    loadFromFile(entryList);
     while(notQuit) {
+        if (chooseAction == QUIT) {
+            saveToFile(entryList);
+            cout << "Contact list saved to contact_list.txt" << endl;
+            exit(0);
+        }
+        
         if (chooseAction == PREV_PAGE || chooseAction == NEXT_PAGE) {
             system("cls");
             if (chooseAction == PREV_PAGE && page_number != 1) {
@@ -83,33 +102,35 @@ int main() {
             else if (chooseAction == NEXT_PAGE && page_number != max_page) {
                 page_number++;
             }
-            switch(page_number) {
-                case 1: {
-                    cout << "\t1. Add an entry\n";
-                    cout << "\t2. Remove an entry\n";
-                    cout << "\t3. Edit an entry\n";
-                    cout << "\t4. Print all entries\n";
-                    cout << "\t5. Clear all entries\n";     
-                    break;
-                }
-                case 2: {
-                    cout << "\t1. Search all entries\n";
-                    cout << "\t2. Save to TXT\n";
-                    cout << "\t3. Sort entries\n";
-                    cout << "\t4. Sort by group\n";
-                    break;
-                }
-            }
-            cout << endl;
-            cout << "\t8. Previous Page\n";
-            cout << "\t9. Next Page\n";
-            cout << "\t0. QUIT\n";
-            cout << "\t------------------\n";
+            
         }
+
+        switch(page_number) {
+            case 1: {
+                cout << "\t1. Add an entry\n";
+                cout << "\t2. Remove an entry\n";
+                cout << "\t3. Edit an entry\n";
+                cout << "\t4. Print all entries\n";
+                cout << "\t5. Clear all entries\n";     
+                break;
+            }
+            case 2: {
+                cout << "\t1. Search all entries\n";
+                cout << "\t2. Sort entries\n";
+                cout << "\t3. Filter by group\n";
+                break;
+            }
+        }
+        cout << endl;
+        cout << "\t8. Previous Page\n";
+        cout << "\t9. Next Page\n";
+        cout << "\t0. QUIT\n";
+        cout << "\t------------------\n";
 
         if (page_number == 1) {
             cout << "Choose Action: ";
             cin >> chooseAction; 
+            system("cls");
             switch(chooseAction) {
                 default: {
                     cin.ignore(256, '\n');
@@ -117,6 +138,7 @@ int main() {
                 }
                 case ADD_ENTRY: {
                     //Get user input
+                    newEntry.id = entryList.size() + 1;
                     newEntry.scanName();
                     newEntry.scanNumber();
 
@@ -125,12 +147,16 @@ int main() {
                     break;
                 }
                 case REMOVE_ENTRY: {
-                    int deleteElem;
                     printAllEntries(entryList);
 
                     cout << "Erase element (-1 to back): ";
                     cin >> deleteElem;
-                    if (deleteElem == -1 || deleteElem > entryList.size()) break;
+                    if (deleteElem < 1 || deleteElem > entryList.size() || !cin) {
+                        cin.clear();
+                        cin.ignore(256, '\n');
+                        break;
+                    }  //!cin -> cin.clear()
+
                     entryList.erase(entryList.begin() + deleteElem - 1);
                     break;
                 }
@@ -141,12 +167,11 @@ int main() {
                     break;
                 }
                 case EDIT_ENTRY: {
-                    int editElem;
                     printAllEntries(entryList);
                     cout << "Edit element (-1 to back): ";
                     //NOTE: check if user want to edit one or both info
                     cin >> editElem;
-                    if (editElem == -1 || editElem > entryList.size()) break;
+                    if (editElem < 1 || editElem > entryList.size()) break;
 
                     entryList[editElem - 1].scanName();
                     entryList[editElem - 1].scanNumber();
@@ -157,17 +182,14 @@ int main() {
                         entryList.clear();
                         cout << "\tContact list deleted.\n";
                     }
-                    //NOTE: confirm before deleting
                     break;
-                }
-                case QUIT: {
-                    exit(0);
                 }
         }}
 
         else if (page_number == 2) {
             cout << "Choose Action: ";
             cin >> chooseAction;
+            system("cls");
             switch(chooseAction) {
                 default: {
                     cin.ignore(256, '\n');
@@ -175,51 +197,61 @@ int main() {
                 }
                 case SEARCH_ENTRY: {
                     string searchQuery;
+                    int actionAfterSearch;
                     bool foundResult = false;
 
                     fflush(stdin);
                     cout << "\tSearch: ";
                     getline(cin, searchQuery);
 
-                    for (auto i : entryList) {
-                        //NOTE: clean the code, count the time search Query appear then print out in the that order. 
+                    for (auto i : entryList) { 
                         //NOTE: maybe add search by first name, last name, ...?
                         //NOTE: search and edit/delete?
                         printSearchResults(i, searchQuery, foundResult);
+                        
                     }
                     if (foundResult == false) { //NOTE: maybe put the cout 
                         cout << "\tNo result found.\n";  
                     }
-                    break;
-                }
-                case SAVE_TO_TXT: {
+                    // cout << "\tChoose entry to edit/remove: ";
+                    // cin >> elem;
+                    // cout << "\t1. Edit\n" << "\t2. Delete\n";
+                    // cin >> actionAfterSearch;
+                    // if (actionAfterSearch == 1) {
+                    //     //Use editEntry function
+                    // }
+                    // else if (actionAfterSearch == 2) {
+                    //     //Use deleteEntry function
+                    // }
+                    // else {
+                    //     cin.clear();
+                    //     cin.ignore(256, '\n');
+                    // }
                     break;
                 }
                 case SORT_ENTRIES: {
                     //sort by?
-
+                    sort(entryList.begin(), entryList.end(), compareLastName);
+                    resetEntryId(entryList);
+                    printAllEntries(entryList);
                     break;
                 }
-                case SORT_BY_GROUP:
+                case FILTER_BY_GROUP:
                     break;
-                case QUIT: {
-                    exit(0);
-                }
             }
         }
-        cout << endl;   
+        system("pause");
+        system("cls");   
     }
     return 0;
 }
 
 void printAllEntries(vector <Entry> &entries) {
     if (!entries.empty()) {
-        int list_count = 1;
         //NOTE: line up when print out. OR keep a space at the beginning of the program to show contact.
         for (auto i : entries) {
-            cout << "\t" << list_count << ". ";
+            cout << "\t";
             i.printInfo();
-            list_count++;
         }
     }
     else {
@@ -237,10 +269,10 @@ string stringToLower(string a) {
 
 void printSearchResults(Entry &entryElem, string &searchQuery, bool &foundResult) {
     //chuyen search query va thong tin trong danh ba thanh lower case de de tim.
-    string lowerName = stringToLower(entryElem.name);
+    string lowerName = stringToLower(entryElem.getName());
     string lowerSearchQuery = stringToLower(searchQuery);
 
-    if ((lowerName.find(lowerSearchQuery) != -1) || (entryElem.getNumber().find(searchQuery) != -1)) {
+    if ((lowerName.find(lowerSearchQuery) != string::npos) || (entryElem.getNumber().find(searchQuery) != string::npos)) {
         cout << "\t";
         entryElem.printInfo();
         foundResult = true;
@@ -253,4 +285,62 @@ bool askToConfirm() {
     cin >> confirm;
     if (confirm == 'y') return true;
     return false;
+}
+
+string getAlias(string &a) { //NOTE: careful with the input
+    string alias;
+    for (int i = 0; i < a.size(); i++) {
+        if ((a[i-1] == ' ' && a[i] != ' ') || i == 0) {
+            alias += toupper(a[i]);
+        }
+    }
+    return alias;
+}
+
+bool compareLastName(Entry entry1, Entry entry2) {
+    string input1 = entry1.getName(), input2 = entry2.getName();
+    string alias1 = getAlias(input1);
+    string alias2 = getAlias(input2);
+    reverse(alias1.begin(), alias1.end()); //xep theo ten nen can reverse, xep theo ho thi khong can
+    reverse(alias2.begin(), alias2.end());
+    return alias1 < alias2;
+}
+
+void resetEntryId(vector <Entry> &entries) {
+    for (int i = 0; i < entries.size(); i++) {
+        entries[i].id = i + 1;
+    }
+}
+
+void saveToFile(vector <Entry> &entries) {
+    string fileName = "contact_list"; //neu muon them tinh nang save cac file khac nhau
+    ofstream outFile(fileName + ".txt");
+    if (!outFile.is_open()) {
+        cout << "ERROR: cannot save to file." << endl;
+    }
+    else {
+        for (auto i : entries) {
+            outFile << i.getName() << endl << i.getNumber() << endl; 
+        }
+        outFile.close();
+    }
+}
+
+void loadFromFile(vector <Entry> &entries) {
+    string fileName = "contact_list";
+    ifstream inFile(fileName + ".txt");
+    if (!inFile.is_open()) {
+        cout << "ERROR: cannot load from file." << endl;
+    }
+    else {
+        while(!inFile.eof()) {
+            Entry newEntry;
+            newEntry.id = entries.size() + 1;
+            getline(inFile, newEntry.name);
+            if (newEntry.name == "") continue;
+            getline(inFile, newEntry.number);
+            entries.push_back(newEntry);
+        }
+        inFile.close();        
+    }
 }
