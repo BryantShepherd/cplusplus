@@ -1,16 +1,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
-// #include <io.h>
-// #include <fcntl.h>
-// #include <stdio.h>
 #include <algorithm>
 #include <fstream>
 
 using namespace std;
-//load when start, save when exit
 struct Entry{
-    //add tag, to specify which group an entry belong to.
     int id;
     string name, number;
     string group;
@@ -94,7 +89,6 @@ int main() {
     const char PREV_PAGE = '8';
     const char NEXT_PAGE = '9';
     const char QUIT = '0';
-    //NOTE: protect with password 
 
     char chooseAction = PREV_PAGE; //to start the program
     Entry newEntry;
@@ -102,9 +96,8 @@ int main() {
     int deleteElem, editElem;
     bool notQuit = true;
 
-    // vector <Entry> entryList {{1, "Alvin Levenson", "(487) 417-0829"}, {2, "Ben Balake", "(743) 395-1377"}, {3, "Chris Brown", "(357) 679-3200"}, {4, "Chris MyAss", "(803) 563-1534"}, {5, "David Copperfield", "(793) 497-9775"}, {6, "Emilia Mayweather", "(743) 796-6980"}}; 
     vector <Entry> entryList;
-    vector <string> allGroup {"Family", "Friend", "Work"};
+    vector <string> allGroup {"Family", "Friend", "Work"}; //cho phep nguoi dung tu them nhom vao
     loadFromFile(entryList);
     while(notQuit) {
         if (chooseAction != PREV_PAGE && chooseAction != NEXT_PAGE && chooseAction != QUIT) system("pause");
@@ -201,6 +194,7 @@ int main() {
 
                     entryList[editElem - 1].scanName();
                     entryList[editElem - 1].scanNumber();
+                    entryList[editElem - 1].scanGroup(allGroup);
                     break;
                 }
                 case CLEAR_ALL_ENTRIES: {
@@ -366,11 +360,9 @@ void loadFromFile(vector <Entry> &entries) {
         cout << "ERROR: cannot load from file." << endl;
     }
     else {
-        while(!inFile.eof()) {
-            Entry newEntry;
+        Entry newEntry;
+        while(getline(inFile, newEntry.name)) {
             newEntry.id = entries.size() + 1;
-            getline(inFile, newEntry.name);
-            if (newEntry.name == "") continue;
             getline(inFile, newEntry.number);
             getline(inFile, newEntry.group);
             entries.push_back(newEntry);
