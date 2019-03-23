@@ -51,7 +51,7 @@ struct Entry{
         }
     }
     void printInfo() {
-        cout << id << ". Name: " << name << "\n\t  Number: " << number << endl; //also print group?
+        cout << id << ". Name: " << name << "\n\t  Number: " << number << "\n\t  Group: " << group << endl; //also print group?
     }
     string getName() {
         return name;
@@ -367,6 +367,14 @@ void loadFromFile(vector <Entry> &entries) {
             getline(inFile, newEntry.group);
             entries.push_back(newEntry);
         }
+        /*
+        while(!inFile.eof()) {
+            newEntry.id = entries.size() + 1;
+            getline(inFile, newEntry.name);
+            getline()...
+            entries.push_back(newEntry);
+        }
+        */
         inFile.close();        
     }
 }
