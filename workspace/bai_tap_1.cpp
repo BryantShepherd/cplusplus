@@ -41,7 +41,7 @@ struct Entry{
         }
         cout << "\tGroup: ";
         cin >> groupChoice;
-        if (groupChoice < 1 || groupChoice > allGroup.size() || !cin) {
+        if (groupChoice < 1 || groupChoice > allGroup.size() || !cin) { //invalid input handling
             cin.clear();
             cin.ignore(256, '\n');
             group = "unknown";
@@ -72,7 +72,7 @@ bool compareLastName(Entry entry1, Entry entry2);
 string getAlias(string &a); //lay ten viet tat (de sap xep danh ba)
 void resetEntryId(vector <Entry> &entries);
 void saveToFile(vector <Entry> &entries);
-void loadFromFile(vector <Entry> &entries);
+void loadFromFile(vector <Entry> &entries, vector <string> &allGroup);
 void searchAction(vector <Entry> &entries);
 
 int main() {
@@ -83,7 +83,7 @@ int main() {
     const char CLEAR_ALL_ENTRIES = '5';
 
     const char SEARCH_ENTRY = '1';
-    const char SORT_ENTRIES = '2';
+    const char ADD_GROUP = '2';
     const char FILTER_BY_GROUP = '3';
 
     const char PREV_PAGE = '8';
@@ -98,7 +98,7 @@ int main() {
 
     vector <Entry> entryList;
     vector <string> allGroup {"Family", "Friend", "Work"}; //cho phep nguoi dung tu them nhom vao
-    loadFromFile(entryList);
+    loadFromFile(entryList, allGroup);
     while(notQuit) {
         if (chooseAction != PREV_PAGE && chooseAction != NEXT_PAGE && chooseAction != QUIT) system("pause");
         system("cls");   
@@ -130,7 +130,7 @@ int main() {
             }
             case 2: {
                 cout << "\t1. Search all entries\n";
-                cout << "\t2. Sort entries\n";
+                cout << "\t2. Add new group\n";
                 cout << "\t3. Filter by group\n";
                 break;
             }
@@ -159,6 +159,7 @@ int main() {
 
                     //Append to contact list
                     entryList.push_back(newEntry);
+                    cout << "\t" << newEntry.getName() << " added to contact list." << endl; 
                     break;
                 }
                 case REMOVE_ENTRY: {
@@ -172,6 +173,7 @@ int main() {
                         break;
                     }  //!cin -> cin.clear()
 
+                    cout << "\t" << entryList[deleteElem - 1].getName() << " deleted from contact list" << endl; 
                     entryList.erase(entryList.begin() + deleteElem - 1);
                     break;
                 }
@@ -237,11 +239,14 @@ int main() {
                     }
                     break;
                 }
-                case SORT_ENTRIES: {
-                    //sort by?
-                    sort(entryList.begin(), entryList.end(), compareLastName);
-                    resetEntryId(entryList);
-                    printAllEntries(entryList);
+                
+                case ADD_GROUP: {
+                    string newGroup;
+                    fflush(stdin);
+                    cout << "\tEnter a new group: ";
+                    getline(cin, newGroup);
+                    allGroup.push_back(newGroup);
+                    cout << "\tNew group added successfully!" << endl;
                     break;
                 }
                 case FILTER_BY_GROUP: {
@@ -275,7 +280,8 @@ int main() {
 
 void printAllEntries(vector <Entry> &entries) {
     if (!entries.empty()) {
-        //NOTE: line up when print out. OR keep a space at the beginning of the program to show contact.
+        sort(entries.begin(), entries.end(), compareLastName);
+        resetEntryId(entries);
         for (auto i : entries) {
             cout << "\t";
             i.printInfo();
@@ -353,7 +359,7 @@ void saveToFile(vector <Entry> &entries) {
     }
 }
 
-void loadFromFile(vector <Entry> &entries) {
+void loadFromFile(vector <Entry> &entries, vector <string> &allGroup) {
     string fileName = "contact_list";
     ifstream inFile(fileName + ".txt");
     if (!inFile.is_open()) {
@@ -365,16 +371,9 @@ void loadFromFile(vector <Entry> &entries) {
             newEntry.id = entries.size() + 1;
             getline(inFile, newEntry.number);
             getline(inFile, newEntry.group);
+            if (!(find(allGroup.begin(), allGroup.end(), newEntry.group) != allGroup.end())) allGroup.push_back(newEntry.group);
             entries.push_back(newEntry);
         }
-        /*
-        while(!inFile.eof()) {
-            newEntry.id = entries.size() + 1;
-            getline(inFile, newEntry.name);
-            getline()...
-            entries.push_back(newEntry);
-        }
-        */
         inFile.close();        
     }
 }
@@ -383,10 +382,10 @@ void searchAction(vector <Entry> &entries) {
     const int EDIT_SEARCH_RESULT = 1;
     const int DEL_SEARCH_RESULT = 2;
     int elem, tmpChooseAction;
-    cout << "\tChoose entry to edit/remove: ";
+    cout << "\tChoose entry to edit/remove (-1 to back): ";
     cin >> elem;
     if (elem < 1 || elem > entries.size() || !cin) {
-        cout << "ERROR: element out of range" << endl;
+        if (elem != -1) cout << "ERROR: element out of range" << endl;
         cin.clear();
         cin.ignore(256, '\n');
     } 
