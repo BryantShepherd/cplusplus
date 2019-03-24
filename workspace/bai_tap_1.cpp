@@ -1,20 +1,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
-// #include <io.h>
-// #include <fcntl.h>
-// #include <stdio.h>
 #include <algorithm>
 #include <fstream>
 
 using namespace std;
-//load when start, save when exit
 struct Entry{
-    //add tag, to specify which group an entry belong to.
     int id;
     string name, number;
-    string group; //moi khi them group vao, ta them string nay vao trong vector khac, de khi can filter thi in tat ca ra cho nguoi dung chon
-    //hoac la chuan bi 2-3 nhom thoi, roi cho nta chon
+    string group;
     
     Entry() {
         id = 0;
@@ -22,11 +16,10 @@ struct Entry{
         number = "unknown";
         group = "unknown";
     }
-    Entry(int _id, string _name, string _number, string _group) {
+    Entry(int _id, string _name, string _number) {
         id = _id;
         name = _name;
         number = _number;
-        group = _group;
     }
     //should I use function, or just cin >> entry.name?
     void scanName() {
@@ -39,13 +32,26 @@ struct Entry{
         cout << "\tNumber: ";
         getline(cin, number);
     }
-    void scanGroup() {
+    void scanGroup(vector <string> &allGroup) {
         fflush(stdin);
+        
+        int groupChoice;
+        for (int i = 0; i < allGroup.size(); i++) {
+            cout << "\t  " << i + 1 << ". " << allGroup[i] << endl;
+        }
         cout << "\tGroup: ";
-        getline(cin, group);
+        cin >> groupChoice;
+        if (groupChoice < 1 || groupChoice > allGroup.size() || !cin) { //invalid input handling
+            cin.clear();
+            cin.ignore(256, '\n');
+            group = "unknown";
+        }
+        else {
+            group = allGroup[groupChoice - 1];
+        }
     }
     void printInfo() {
-        cout << id << ". Name: " << name << "\n\t  Number: " << number << endl;
+        cout << id << ". Name: " << name << "\n\t  Number: " << number << "\n\t  Group: " << group << endl; //also print group?
     }
     string getName() {
         return name;
@@ -66,7 +72,7 @@ bool compareLastName(Entry entry1, Entry entry2);
 string getAlias(string &a); //lay ten viet tat (de sap xep danh ba)
 void resetEntryId(vector <Entry> &entries);
 void saveToFile(vector <Entry> &entries);
-void loadFromFile(vector <Entry> &entries);
+void loadFromFile(vector <Entry> &entries, vector <string> &allGroup);
 void searchAction(vector <Entry> &entries);
 
 int main() {
@@ -77,13 +83,12 @@ int main() {
     const char CLEAR_ALL_ENTRIES = '5';
 
     const char SEARCH_ENTRY = '1';
-    const char SORT_ENTRIES = '2';
+    const char ADD_GROUP = '2';
     const char FILTER_BY_GROUP = '3';
 
     const char PREV_PAGE = '8';
     const char NEXT_PAGE = '9';
     const char QUIT = '0';
-    //NOTE: protect with password 
 
     char chooseAction = PREV_PAGE; //to start the program
     Entry newEntry;
@@ -91,9 +96,9 @@ int main() {
     int deleteElem, editElem;
     bool notQuit = true;
 
-    // vector <Entry> entryList {{1, "Alvin Levenson", "(487) 417-0829"}, {2, "Ben Balake", "(743) 395-1377"}, {3, "Chris Brown", "(357) 679-3200"}, {4, "Chris MyAss", "(803) 563-1534"}, {5, "David Copperfield", "(793) 497-9775"}, {6, "Emilia Mayweather", "(743) 796-6980"}}; 
     vector <Entry> entryList;
-    loadFromFile(entryList);
+    vector <string> allGroup {"Family", "Friend", "Work"}; //cho phep nguoi dung tu them nhom vao
+    loadFromFile(entryList, allGroup);
     while(notQuit) {
         if (chooseAction != PREV_PAGE && chooseAction != NEXT_PAGE && chooseAction != QUIT) system("pause");
         system("cls");   
@@ -125,7 +130,7 @@ int main() {
             }
             case 2: {
                 cout << "\t1. Search all entries\n";
-                cout << "\t2. Sort entries\n";
+                cout << "\t2. Add new group\n";
                 cout << "\t3. Filter by group\n";
                 break;
             }
@@ -150,10 +155,11 @@ int main() {
                     newEntry.id = entryList.size() + 1;
                     newEntry.scanName();
                     newEntry.scanNumber();
-                    newEntry.scanGroup();
+                    newEntry.scanGroup(allGroup);
 
                     //Append to contact list
                     entryList.push_back(newEntry);
+                    cout << "\t" << newEntry.getName() << " added to contact list." << endl; 
                     break;
                 }
                 case REMOVE_ENTRY: {
@@ -167,6 +173,7 @@ int main() {
                         break;
                     }  //!cin -> cin.clear()
 
+                    cout << "\t" << entryList[deleteElem - 1].getName() << " deleted from contact list" << endl; 
                     entryList.erase(entryList.begin() + deleteElem - 1);
                     break;
                 }
@@ -189,7 +196,7 @@ int main() {
 
                     entryList[editElem - 1].scanName();
                     entryList[editElem - 1].scanNumber();
-                    //them scangroup
+                    entryList[editElem - 1].scanGroup(allGroup);
                     break;
                 }
                 case CLEAR_ALL_ENTRIES: {
@@ -227,18 +234,43 @@ int main() {
                     if (foundResult == false) {
                         cout << "\tNo result found.\n";  
                     }
-                    searchAction(entryList); //choose search result and edit/remove
+                    else {
+                        searchAction(entryList); //choose search result and edit/remove
+                    }
                     break;
                 }
-                case SORT_ENTRIES: {
-                    //sort by?
-                    sort(entryList.begin(), entryList.end(), compareLastName);
-                    resetEntryId(entryList);
-                    printAllEntries(entryList);
+                
+                case ADD_GROUP: {
+                    string newGroup;
+                    fflush(stdin);
+                    cout << "\tEnter a new group: ";
+                    getline(cin, newGroup);
+                    allGroup.push_back(newGroup);
+                    cout << "\tNew group added successfully!" << endl;
                     break;
                 }
-                case FILTER_BY_GROUP:
+                case FILTER_BY_GROUP: {
+                    int groupChoice;
+                    for (int i = 0; i < allGroup.size(); i++) {
+                        cout << "\t  " << i + 1 << ". " << allGroup[i] << endl;
+                    }
+                    cout << "\tShow group: ";
+                    cin >> groupChoice;
+                    if (groupChoice < 1 || groupChoice > allGroup.size() || !cin) {
+                        cin.clear();
+                        cin.ignore(256, '\n');
+                    }
+                    else {
+                        for (auto i : entryList) {
+                            if (i.getGroup() == allGroup[groupChoice - 1]) {
+                                cout << "\t";
+                                i.printInfo();
+                            }
+                        }
+                    }
                     break;
+                }
+                    
             }
         }
         
@@ -248,7 +280,8 @@ int main() {
 
 void printAllEntries(vector <Entry> &entries) {
     if (!entries.empty()) {
-        //NOTE: line up when print out. OR keep a space at the beginning of the program to show contact.
+        sort(entries.begin(), entries.end(), compareLastName);
+        resetEntryId(entries);
         for (auto i : entries) {
             cout << "\t";
             i.printInfo();
@@ -320,25 +353,25 @@ void saveToFile(vector <Entry> &entries) {
     }
     else {
         for (auto i : entries) {
-            outFile << i.getName() << endl << i.getNumber() << endl; 
+            outFile << i.getName() << endl << i.getNumber() << endl << i.getGroup() << endl; 
         }
         outFile.close();
     }
 }
 
-void loadFromFile(vector <Entry> &entries) {
+void loadFromFile(vector <Entry> &entries, vector <string> &allGroup) {
     string fileName = "contact_list";
     ifstream inFile(fileName + ".txt");
     if (!inFile.is_open()) {
         cout << "ERROR: cannot load from file." << endl;
     }
     else {
-        while(!inFile.eof()) {
-            Entry newEntry;
+        Entry newEntry;
+        while(getline(inFile, newEntry.name)) {
             newEntry.id = entries.size() + 1;
-            getline(inFile, newEntry.name);
-            if (newEntry.name == "") continue;
             getline(inFile, newEntry.number);
+            getline(inFile, newEntry.group);
+            if (!(find(allGroup.begin(), allGroup.end(), newEntry.group) != allGroup.end())) allGroup.push_back(newEntry.group);
             entries.push_back(newEntry);
         }
         inFile.close();        
@@ -349,17 +382,18 @@ void searchAction(vector <Entry> &entries) {
     const int EDIT_SEARCH_RESULT = 1;
     const int DEL_SEARCH_RESULT = 2;
     int elem, tmpChooseAction;
-    cout << "\tChoose entry to edit/remove: ";
+    cout << "\tChoose entry to edit/remove (-1 to back): ";
     cin >> elem;
     if (elem < 1 || elem > entries.size() || !cin) {
-        cout << "ERROR: element out of range" << endl;
+        if (elem != -1) cout << "ERROR: element out of range" << endl;
+        cin.clear();
         cin.ignore(256, '\n');
     } 
     else {
-        cout << "\t\t1. Edit entry" << endl;
-        cout << "\t\t2. Remove entry" << endl;
-        cout << "\n\t\t0. Back" << endl;
-        cout << "\t\t Edit/remove: ";
+        cout << "\t  1. Edit entry" << endl;
+        cout << "\t  2. Remove entry" << endl;
+        cout << "\n\t  0. Back" << endl;
+        cout << "\t  Edit/remove: ";
         cin >> tmpChooseAction;
         switch(tmpChooseAction) {
             default: {
