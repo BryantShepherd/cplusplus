@@ -73,7 +73,8 @@ string getAlias(string &a); //lay ten viet tat (de sap xep danh ba)
 void resetEntryId(vector <Entry> &entries);
 void saveToFile(vector <Entry> &entries);
 void loadFromFile(vector <Entry> &entries, vector <string> &allGroup);
-void searchAction(vector <Entry> &entries);
+void searchAction(vector <Entry> &entries, vector <string> &allGroup);
+void editAction(int &editElem, vector <Entry> &entries, vector <string> &allGroup);
 
 int main() {
     const char ADD_ENTRY = '1';
@@ -84,7 +85,8 @@ int main() {
 
     const char SEARCH_ENTRY = '1';
     const char ADD_GROUP = '2';
-    const char FILTER_BY_GROUP = '3';
+    const char DEL_GROUP = '3';
+    const char FILTER_BY_GROUP = '4';
 
     const char PREV_PAGE = '8';
     const char NEXT_PAGE = '9';
@@ -131,7 +133,8 @@ int main() {
             case 2: {
                 cout << "\t1. Search all entries\n";
                 cout << "\t2. Add new group\n";
-                cout << "\t3. Filter by group\n";
+                cout << "\t3. Delete group\n";
+                cout << "\t4. Filter by group\n";
                 break;
             }
         }
@@ -167,18 +170,18 @@ int main() {
 
                     cout << "Erase element (-1 to back): ";
                     cin >> deleteElem;
+                    //check if input is valid
                     if (deleteElem < 1 || deleteElem > entryList.size() || !cin) {
                         cin.clear();
                         cin.ignore(256, '\n');
                         break;
-                    }  //!cin -> cin.clear()
-
+                    }  
+                    //show notification and delete chosen entry
                     cout << "\t" << entryList[deleteElem - 1].getName() << " deleted from contact list" << endl; 
                     entryList.erase(entryList.begin() + deleteElem - 1);
                     break;
                 }
                 case PRINT_ALL_ENTRIES: {
-                    //NOTE: keep the contact in a file.
                     cout << "All entries: " << endl;
                     printAllEntries(entryList);
                     break;
@@ -193,10 +196,7 @@ int main() {
                         cin.ignore(256, '\n');
                         break;
                     }  
-
-                    entryList[editElem - 1].scanName();
-                    entryList[editElem - 1].scanNumber();
-                    entryList[editElem - 1].scanGroup(allGroup);
+                    editAction(editElem, entryList, allGroup);
                     break;
                 }
                 case CLEAR_ALL_ENTRIES: {
@@ -219,8 +219,7 @@ int main() {
                 }
                 case SEARCH_ENTRY: {
                     string searchQuery;
-                    int actionAfterSearch;
-                    bool foundResult = false;
+                    bool foundResult = false; //check if results are found
 
                     fflush(stdin);
                     cout << "\tSearch: ";
@@ -235,7 +234,7 @@ int main() {
                         cout << "\tNo result found.\n";  
                     }
                     else {
-                        searchAction(entryList); //choose search result and edit/remove
+                        searchAction(entryList, allGroup); //choose search result and edit/remove
                     }
                     break;
                 }
@@ -249,6 +248,19 @@ int main() {
                     cout << "\tNew group added successfully!" << endl;
                     break;
                 }
+
+                case DEL_GROUP: {
+                    for (int i = 0; i < allGroup.size(); i++) {
+                        cout << "\t" << i + 1 << ". " << allGroup[i] << endl;
+                    }
+                    int delGroup;
+                    cout << "Delete group: ";
+                    cin >> delGroup;
+                    cout << "\t" << allGroup[delGroup - 1] << " deleted successfully!\n";
+                    allGroup.erase(allGroup.begin() + delGroup - 1);
+                    break;
+                }
+
                 case FILTER_BY_GROUP: {
                     int groupChoice;
                     for (int i = 0; i < allGroup.size(); i++) {
@@ -268,6 +280,8 @@ int main() {
                             }
                         }
                     }
+
+                    //Add action after filtering?
                     break;
                 }
                     
@@ -320,7 +334,7 @@ bool askToConfirm() {
     return false;
 }
 
-string getAlias(string &a) { //NOTE: careful with the input
+string getAlias(string &a) {
     string alias;
     for (int i = 0; i < a.size(); i++) {
         if ((a[i-1] == ' ' && a[i] != ' ') || i == 0) {
@@ -371,14 +385,15 @@ void loadFromFile(vector <Entry> &entries, vector <string> &allGroup) {
             newEntry.id = entries.size() + 1;
             getline(inFile, newEntry.number);
             getline(inFile, newEntry.group);
-            if (!(find(allGroup.begin(), allGroup.end(), newEntry.group) != allGroup.end())) allGroup.push_back(newEntry.group); //if a group is not in the allGroup vector, append it.
+            //check if newEntry.group is already in allGroup vector, if not, append it.
+            if (!(find(allGroup.begin(), allGroup.end(), newEntry.group) != allGroup.end())) allGroup.push_back(newEntry.group);
             entries.push_back(newEntry);
         }
         inFile.close();        
     }
 }
 
-void searchAction(vector <Entry> &entries) {
+void searchAction(vector <Entry> &entries, vector <string> &allGroup) {
     const int EDIT_SEARCH_RESULT = 1;
     const int DEL_SEARCH_RESULT = 2;
     int elem, tmpChooseAction;
@@ -401,10 +416,7 @@ void searchAction(vector <Entry> &entries) {
                 break;
             }
             case EDIT_SEARCH_RESULT: {
-                cout << "\t";
-                entries[elem - 1].scanName();
-                cout << "\t";
-                entries[elem - 1].scanNumber();
+                editAction(elem, entries, allGroup);
                 break;
             }
             case DEL_SEARCH_RESULT: {
@@ -415,4 +427,37 @@ void searchAction(vector <Entry> &entries) {
         }
     }
     
+}
+
+void editAction(int &editElem, vector <Entry> &entries, vector <string> &allGroup) {
+    int editChoice;
+    cout << "\t1. Edit name\n";
+    cout << "\t2. Edit number\n";
+    cout << "\t3. Edit group\n";
+    cout << "\t4. Edit all\n";
+    cin >> editChoice;
+    switch(editChoice) {
+        default: {
+            cin.ignore(256, '\n');
+            break;
+        }
+        case 1: {
+            entries[editElem - 1].scanName();
+            break;
+        }
+        case 2: {
+            entries[editElem - 1].scanNumber();
+            break;
+        }
+        case 3: {
+            entries[editElem - 1].scanGroup(allGroup);
+            break;
+        }
+        case 4: {
+            entries[editElem - 1].scanName();
+            entries[editElem - 1].scanNumber();
+            entries[editElem - 1].scanGroup(allGroup);
+            break;
+        }
+    }
 }
