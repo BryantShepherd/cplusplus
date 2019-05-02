@@ -371,7 +371,7 @@ void loadFromFile(vector <Entry> &entries, vector <string> &allGroup) {
             newEntry.id = entries.size() + 1;
             getline(inFile, newEntry.number);
             getline(inFile, newEntry.group);
-            if (!(find(allGroup.begin(), allGroup.end(), newEntry.group) != allGroup.end())) allGroup.push_back(newEntry.group);
+            if (!(find(allGroup.begin(), allGroup.end(), newEntry.group) != allGroup.end())) allGroup.push_back(newEntry.group); //if a group is not in the allGroup vector, append it.
             entries.push_back(newEntry);
         }
         inFile.close();        
