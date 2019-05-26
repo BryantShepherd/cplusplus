@@ -199,6 +199,7 @@ void DuelMode::render(SDL_Renderer* renderer, bool end_loop)
         }
         else if(status >= DEATH)
         {
+            //render match result
             background.render(1, (SCREEN_WIDTH-background.getWidth(1))/2, (SCREEN_HEIGHT-background.getHeight(1))/2, background.getWidth(1), background.getHeight(1), renderer, 0, NULL, SDL_FLIP_NONE);
         }
 

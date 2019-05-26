@@ -33,8 +33,12 @@ void MainMenu::loadMedia(SDL_Renderer* renderer)
     button.at(0).setPosition(75, 50);
 
     button.push_back(Button());
-    button.at(1).loadFromFile("assets/RPG_UI/PNG/buttonRound_beige.png", renderer);
-    button.at(1).setPosition(10, SCREEN_HEIGHT/4);
+    button.at(1).loadFromFile("assets/RPG_UI/PNG/hard-button.png", renderer);
+    button.at(1).setPosition(20, SCREEN_HEIGHT/4);
+
+    button.push_back(Button());
+    button.at(2).loadFromFile("assets/RPG_UI/PNG/duel-button.png", renderer);
+    button.at(2).setPosition(20, 200);
 
     sound.push_back(Mix_LoadWAV("assets/audio/jump.wav"));
 }
@@ -45,6 +49,7 @@ void MainMenu::handleEvent(SDL_Event event, bool &end_loop, int &mode)
     {
         button.at(0).handleEvent(event);
         button.at(1).handleEvent(event);
+        button.at(2).handleEvent(event);
         switch(event.type)
         {
         case SDL_QUIT:
@@ -76,12 +81,17 @@ void MainMenu::update(bool &end_loop, int &mode)
 {
     if(button.at(0).isHittingButton() == true)
     {
-        mode = 1;
+        mode = CLASSIC;
         Mix_PlayChannel( -1, sound.at(0), 0 );
     }
     if(button.at(1).isHittingButton() == true)
     {
-        mode = 2;
+        mode = HARD;
+        Mix_PlayChannel( -1, sound.at(0), 0 );
+    }
+    if(button.at(2).isHittingButton() == true)
+    {
+        mode = DUEL;
         Mix_PlayChannel( -1, sound.at(0), 0 );
     }
 }
@@ -100,6 +110,8 @@ void MainMenu::render(SDL_Renderer* renderer, bool end_loop)
 
     button.at(1).render(0, button.at(1).getX(0), button.at(1).getY(0), button.at(1).getWidth(0), button.at(1).getHeight(0), renderer, 0, NULL, SDL_FLIP_NONE);
 
+    button.at(2).render(0, button.at(2).getX(0), button.at(2).getY(0), button.at(2).getWidth(0), button.at(2).getHeight(0), renderer, 0, NULL, SDL_FLIP_NONE);
+
     frame++;
     if(frame/3 >= 3)
         frame = 0;
@@ -111,4 +123,5 @@ void MainMenu::reset()
 {
     button.at(0).reset();
     button.at(1).reset();
+    button.at(2).reset();
 }

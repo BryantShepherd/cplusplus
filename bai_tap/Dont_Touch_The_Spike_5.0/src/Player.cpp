@@ -1,15 +1,16 @@
 #include "Player.h"
 
 //Note: status is DuelMode properties, not Player properties, so the naming can be misleading.
+//Note: Stop using ddx. For the birds to reach walls at the same time, velocity need to be constant.
 Player1::Player1()
 {
     x.push_back(SCREEN_WIDTH/2.0);
     y.push_back(SCREEN_HEIGHT/2.0 + 50);
     dx = 0;
     dy = 0;
-    ddx = 0.05;
+    ddx = 0;
     ddy = 0.3;
-    change_press_dx = 2;
+    change_press_dx = 0;
     change_press_dy = -7.5;
     is_key_pressed = false;
 }
@@ -26,7 +27,7 @@ void Player1::handleEvent(SDL_Event event, int &status, vector<Mix_Chunk*> sound
             {
                 //dx = change_press_dx; //change in velocity when press SPACE
                 dy = change_press_dy;
-                ddy = 0.3;
+                ddy = 0.3; //for future use: wait until press SPACE to play
             }
             else if(status == GOING_LEFT)
             {
@@ -40,15 +41,28 @@ void Player1::handleEvent(SDL_Event event, int &status, vector<Mix_Chunk*> sound
     }
 }}
 
+void Player1::reset()
+{
+    x.at(0)=(SCREEN_WIDTH/2.0-26);
+    y.at(0)=(SCREEN_HEIGHT/2.0-76);
+    dx = 3;
+    dy = 0;
+    ddx = 0;
+    ddy = 0.3;
+    change_press_dx = 0;
+    change_press_dy = -7.5;
+    is_key_pressed = false;
+}
+
 Player2::Player2()
 {
     x.push_back(SCREEN_WIDTH/2.0);
     y.push_back(SCREEN_HEIGHT/2.0 - 50);
     dx = 0;
     dy = 0;
-    ddx = -0.05;
+    ddx = 0;
     ddy = 0.3;
-    change_press_dx = -2;
+    change_press_dx = 0;
     change_press_dy = -7.5;
     is_key_pressed = false;
 }
@@ -79,19 +93,6 @@ void Player2::handleEvent(SDL_Event event, int &status, vector<Mix_Chunk*> sound
     }
 }}
 
-void Player1::reset()
-{
-    x.at(0)=(SCREEN_WIDTH/2.0-26);
-    y.at(0)=(SCREEN_HEIGHT/2.0-76);
-    dx = 3;
-    dy = 0;
-    ddx = 0;
-    ddy = 0.3;
-    change_press_dx = 0;
-    change_press_dy = -7.5;
-    is_key_pressed = false;
-}
-
 void Player2::reset()
 {
     x.at(0)=(SCREEN_WIDTH/2.0-26);
@@ -108,14 +109,15 @@ void Player2::reset()
 void Player2::update(int &status, int &score, bool &isHittingWall)
 {
 //    isHittingWall = true;
+//  Player2 stop using isHittingWall and score to prevent error.
     if(status == GOING_RIGHT)
     {
-        dx -= ddx; //cho de dieu chinh van toc cua cac con chim khac nhau
+        //dx -= ddx;
         dy += ddy;
     }
     else if(status == GOING_LEFT)
     {
-        dx += ddx;
+        //dx += ddx;
         dy += ddy;
     }
 

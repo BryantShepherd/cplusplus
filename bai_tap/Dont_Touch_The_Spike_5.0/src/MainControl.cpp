@@ -17,7 +17,7 @@ MainControl::MainControl()
 //    isHittingWall = false;
 //    status = 0;
 //    score = -1;
-    mode = 3;
+    mode = MENU;
 }
 
 MainControl::~MainControl()
